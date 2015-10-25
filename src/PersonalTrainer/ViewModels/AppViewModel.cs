@@ -25,6 +25,7 @@ namespace Figroll.PersonalTrainer.ViewModels
         private readonly Logger _logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType?.ToString());
 
         private string _displayName = "AUTO TRAINER";
+        private string _errorText;
         private string _actionText;
 
         private AutoTrainerModes _autoTrainerMode;
@@ -38,6 +39,16 @@ namespace Figroll.PersonalTrainer.ViewModels
             {
                 _displayName = value;
                 NotifyOfPropertyChange(() => DisplayName);
+            }
+        }
+
+        public string ErrorText
+        {
+            get { return _errorText; }
+            set
+            {
+                _errorText = value;
+                NotifyOfPropertyChange(() => ErrorText);
             }
         }
 
@@ -74,6 +85,7 @@ namespace Figroll.PersonalTrainer.ViewModels
         private void SetSessionState()
         {
             _autoTrainerMode = AutoTrainerModes.ActiveSession;
+            ErrorText = string.Empty;
             ActionText = "TAP OUT";
         }
 
@@ -104,8 +116,17 @@ namespace Figroll.PersonalTrainer.ViewModels
             ActivateItem(_session);
         }
 
-        private void OnScriptCompleted(object sender, EventArgs eventArgs)
+        private void OnScriptCompleted(object sender, ScriptResultEventArgs args)
         {
+            if (args.Result.CompileExceptionInfo != null)
+            {
+                ErrorText = args.Result.CompileExceptionInfo.SourceException.Message;
+            }
+            else if (args.Result.ExecuteExceptionInfo != null)
+            {
+                ErrorText = args.Result.ExecuteExceptionInfo.SourceException.Message;
+            }
+
             EndSession();
         }
 

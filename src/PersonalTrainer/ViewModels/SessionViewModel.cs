@@ -1,26 +1,33 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.Reflection;
-using System.Security.RightsManagement;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Threading;
 using Caliburn.Micro;
 using Figroll.PersonalTrainer.Domain;
 using Figroll.PersonalTrainer.Domain.Scripting;
 using Figroll.PersonalTrainer.Domain.Voice;
+using ScriptCs.Contracts;
 using NLog;
-using Action = System.Action;
 using LogManager = NLog.LogManager;
 
 namespace Figroll.PersonalTrainer.ViewModels
 {
+    public class ScriptResultEventArgs : EventArgs
+    {
+        public ScriptResult Result { get; private set; }
+
+        public ScriptResultEventArgs(ScriptResult result)
+        {
+            Result = result;
+        }
+    }
+
     [Export(typeof(SessionViewModel))]
-    public class SessionViewModel : Screen
+    public sealed class SessionViewModel : Screen
     {
         private readonly ITrainingSession _trainingSession;
         private readonly IHostedScriptExecutor _scriptExecutor;
-        private readonly Logger _logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType?.ToString());
+        private readonly NLog.Logger _logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType?.ToString());
 
         private string _imageLocation = string.Empty;
         private string _subtitle;
@@ -57,26 +64,21 @@ namespace Figroll.PersonalTrainer.ViewModels
 
         protected override void OnViewLoaded(object view)
         {
-            Task.Factory.StartNew(() => _scriptExecutor.ExecuteScript(_script)).ContinueWith(_ => OnScriptCompleted());
+            Task.Factory.StartNew(() => _scriptExecutor.Execute(DefaultScript)).ContinueWith(_ => OnScriptCompleted());
         }
 
-        private string _script = @"
-var _ = Require<TrainingSession>();
-_.Trainer.UseVoice(""Amy"");
-_.Trainer.SayAsync(""This is a very long speech that should be over by the time we hear the mext voice."");
-_.Trainer.Say(""Hello from the script"");
-";
+        private const string DefaultScript = "./scripts/default.csx";
 
         private void TrainerOnSpoke(object sender, SpokeEventArgs spokeEventArgs)
         {
             Subtitle = spokeEventArgs.Words;
         }
 
-        public event EventHandler<EventArgs> ScriptCompleted;
+        public event EventHandler<ScriptResultEventArgs> ScriptCompleted;
 
-        protected virtual void OnScriptCompleted()
+        private void OnScriptCompleted()
         {
-            ScriptCompleted?.Invoke(this, EventArgs.Empty);
+            ScriptCompleted?.Invoke(this, new ScriptResultEventArgs(_scriptExecutor.Result));
         }
     }
 }
