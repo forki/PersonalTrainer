@@ -1,5 +1,4 @@
-﻿var _ = Require<TrainingSession>();
+﻿var app = Require<TrainingSession>();
 
-_.Trainer.UseVoice("Amy");
-_.Trainer.Say("Hello from the script");
-Thread.Sleep(2000);
+app.Trainer.UseVoice("Amy");
+app.Trainer.Say("Hello from the script");

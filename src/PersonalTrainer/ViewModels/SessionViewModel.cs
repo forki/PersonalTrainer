@@ -25,9 +25,10 @@ namespace Figroll.PersonalTrainer.ViewModels
     [Export(typeof(SessionViewModel))]
     public sealed class SessionViewModel : Screen
     {
+        private readonly NLog.Logger _logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType?.ToString());
+
         private readonly ITrainingSession _trainingSession;
         private readonly IHostedScriptExecutor _scriptExecutor;
-        private readonly NLog.Logger _logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType?.ToString());
 
         private string _imageLocation = string.Empty;
         private string _subtitle;
@@ -59,7 +60,6 @@ namespace Figroll.PersonalTrainer.ViewModels
             _trainingSession.Trainer.Spoke += TrainerOnSpoke;
 
             ImageLocation = @"D:\Milovana\Captions\sissydru4u 1-5\207507707.jpg";
-
         }
 
         protected override void OnViewLoaded(object view)
@@ -78,6 +78,7 @@ namespace Figroll.PersonalTrainer.ViewModels
 
         private void OnScriptCompleted()
         {
+            _trainingSession.Trainer.Spoke -= TrainerOnSpoke;
             ScriptCompleted?.Invoke(this, new ScriptResultEventArgs(_scriptExecutor.Result));
         }
     }

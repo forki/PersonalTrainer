@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.Reflection;
-using System.Threading.Tasks;
 using Caliburn.Micro;
 using Figroll.PersonalTrainer.Domain;
 using Figroll.PersonalTrainer.Domain.Scripting;
@@ -16,7 +15,7 @@ namespace Figroll.PersonalTrainer.ViewModels
         private readonly ITrainingSession _trainingSession;
         private readonly IHostedScriptExecutor _scriptExecutor;
 
-        private enum AutoTrainerModes
+        public enum AutoTrainerModes
         {
             Controller,
             ActiveSession,
@@ -26,7 +25,6 @@ namespace Figroll.PersonalTrainer.ViewModels
 
         private string _displayName = "AUTO TRAINER";
         private string _errorText;
-        private string _actionText;
 
         private AutoTrainerModes _autoTrainerMode;
         private readonly ControllerViewModel _controller;
@@ -42,6 +40,8 @@ namespace Figroll.PersonalTrainer.ViewModels
             }
         }
 
+        public bool IsSessionActive => AutoTrainerMode == AutoTrainerModes.ActiveSession;
+
         public string ErrorText
         {
             get { return _errorText; }
@@ -52,13 +52,14 @@ namespace Figroll.PersonalTrainer.ViewModels
             }
         }
 
-        public string ActionText
+        public AutoTrainerModes AutoTrainerMode
         {
-            get { return _actionText; }
+            get { return _autoTrainerMode; }
             set
             {
-                _actionText = value;
-                NotifyOfPropertyChange(() => ActionText);
+                _autoTrainerMode = value;
+                NotifyOfPropertyChange(() => AutoTrainerMode);
+                NotifyOfPropertyChange(() => IsSessionActive);
             }
         }
 
@@ -78,29 +79,25 @@ namespace Figroll.PersonalTrainer.ViewModels
 
         private void SetControlPanelState()
         {
-            _autoTrainerMode = AutoTrainerModes.Controller;
-            ActionText = "START!";
+            AutoTrainerMode = AutoTrainerModes.Controller;
         }
 
         private void SetSessionState()
         {
-            _autoTrainerMode = AutoTrainerModes.ActiveSession;
+            AutoTrainerMode = AutoTrainerModes.ActiveSession;
             ErrorText = string.Empty;
-            ActionText = "TAP OUT";
         }
-
 
         public void UserAction()
         {
-            switch (_autoTrainerMode)
+            switch (AutoTrainerMode)
             {
                 case AutoTrainerModes.Controller:
                     _logger.Info("User started session");
                     StartSession();
                     break;
                 case AutoTrainerModes.ActiveSession:
-                    _logger.Info("User ended session");
-                    EndSession();
+                    // Button invisible at this point. Had intended to have a global "TAP OUT!" button.
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

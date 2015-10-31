@@ -1,5 +1,4 @@
 using Figroll.PersonalTrainer.Domain.Voice;
-using ScriptCs.Contracts;
 
 namespace Figroll.PersonalTrainer.Domain
 {
