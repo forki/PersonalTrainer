@@ -87,6 +87,22 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Reactive.Core, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rx-Core.2.2.5\lib\net45\System.Reactive.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rx-Interfaces.2.2.5\lib\net45\System.Reactive.Interfaces.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Reactive.Linq, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rx-Linq.2.2.5\lib\net45\System.Reactive.Linq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rx-PlatformServices.2.2.5\lib\net45\System.Reactive.PlatformServices.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Speech" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -99,15 +115,36 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Content\ContentCollection.cs" />
+    <Compile Include="Content\ContentPlayer.cs" />
+    <Compile Include="Content\Gallery.cs" />
+    <Compile Include="Content\IContentCollection.cs" />
+    <Compile Include="Content\IGallery.cs" />
+    <Compile Include="Content\IRandomNumberGenerator.cs" />
+    <Compile Include="Content\IContentViewer.cs" />
+    <Compile Include="Content\Picture.cs" />
+    <Compile Include="Content\PictureInfo.cs" />
+    <Compile Include="Content\PictureRequestedEventArgs.cs" />
     <Compile Include="ITrainingSession.cs" />
+    <Compile Include="Metronome\IMetronome.cs" />
+    <Compile Include="Metronome\ISequencer.cs" />
+    <Compile Include="Metronome\Metronome.cs" />
+    <Compile Include="Metronome\MetronomeEventArgs.cs" />
+    <Compile Include="Metronome\Sequencer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scripting\PersonalTrainerConsole.cs" />
     <Compile Include="Scripting\PersonalTrainerScriptPack.cs" />
     <Compile Include="Scripting\HostedScriptExecutor.cs" />
     <Compile Include="Scripting\IHostedScriptExecutor.cs" />
     <Compile Include="Scripting\ScriptCsHost.cs" />
     <Compile Include="Scripting\ScriptFileSystem.cs" />
+    <Compile Include="TestBed.cs" />
+    <Compile Include="Timer\ITimer.cs" />
+    <Compile Include="Timer\SessionTimer.cs" />
+    <Compile Include="Timer\TimerEventArgs.cs" />
     <Compile Include="TrainingSession.cs" />
     <Compile Include="Utilities\ExtensionMethods.cs" />
+    <Compile Include="Utilities\RandomNumberGenerator.cs" />
     <Compile Include="Utilities\RandomProvider.cs" />
     <Compile Include="Voice\ITrainerVoice.cs" />
     <Compile Include="Voice\SpokeEventArgs.cs" />
@@ -115,6 +152,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="53403__calaudio__wood-block.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="_readme_and_license.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

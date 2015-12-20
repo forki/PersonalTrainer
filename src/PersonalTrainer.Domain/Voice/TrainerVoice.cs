@@ -14,7 +14,7 @@ namespace Figroll.PersonalTrainer.Domain.Voice
     // ReSharper disable once ClassNeverInstantiated.Global
     public sealed class TrainerVoice : ITrainerVoice
     {
-        private const int TrainerSpeechPause = 250;
+        private const int TrainerSpeechEndPause = 500;
         private const int MilisecondsPerWord = 400;
 
         private readonly Logger _logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType?.ToString());
@@ -24,7 +24,7 @@ namespace Figroll.PersonalTrainer.Domain.Voice
 
         public void VoiceOff()
         {
-            _logger.Error("TTS disabled.");
+            _logger.Trace("TTS disabled.");
             _voiceSelected = false;
         }
 
@@ -144,6 +144,12 @@ namespace Figroll.PersonalTrainer.Domain.Voice
             }
         }
 
+        public void Say(string text, int thenPause)
+        {
+            Say(text);
+            Thread.Sleep(thenPause.ToMilliseconds());
+        }
+
         public void SayAsync(string text)
         {
             if (_voiceSelected)
@@ -159,17 +165,13 @@ namespace Figroll.PersonalTrainer.Domain.Voice
 
         private void SubtitleOnlySay(string words)
         {
-            DoSynchronousSay(words);
-            OnSpoke(new SpokeEventArgs(string.Empty));
-        }
+            OnSpoke(new SpokeEventArgs(words));
 
-        private void DoSynchronousSay(string text)
-        {
-            OnSpoke(new SpokeEventArgs(text));
-
-            var spaceCount = text.Count(Char.IsWhiteSpace);
-            var delay = (spaceCount + 1) * MilisecondsPerWord + TrainerSpeechPause;
+            var spaceCount = words.Count(Char.IsWhiteSpace);
+            var delay = (spaceCount + 1) * MilisecondsPerWord + TrainerSpeechEndPause;
             Thread.Sleep(delay);
+
+            OnSpoke(new SpokeEventArgs(string.Empty));
         }
 
         public event EventHandler<SpokeEventArgs> Spoke;

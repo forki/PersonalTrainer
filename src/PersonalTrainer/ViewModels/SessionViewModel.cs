@@ -2,12 +2,14 @@
 using System.ComponentModel.Composition;
 using System.Reflection;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using Caliburn.Micro;
 using Figroll.PersonalTrainer.Domain;
+using Figroll.PersonalTrainer.Domain.Content;
 using Figroll.PersonalTrainer.Domain.Scripting;
 using Figroll.PersonalTrainer.Domain.Voice;
 using ScriptCs.Contracts;
-using NLog;
+using Action = System.Action;
 using LogManager = NLog.LogManager;
 
 namespace Figroll.PersonalTrainer.ViewModels
@@ -22,16 +24,19 @@ namespace Figroll.PersonalTrainer.ViewModels
         }
     }
 
-    [Export(typeof(SessionViewModel))]
+    [Export(typeof (SessionViewModel))]
     public sealed class SessionViewModel : Screen
     {
         private readonly NLog.Logger _logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType?.ToString());
 
+        private readonly Dispatcher _dispatcher;
         private readonly ITrainingSession _trainingSession;
         private readonly IHostedScriptExecutor _scriptExecutor;
+        private readonly string _scriptFile;
 
         private string _imageLocation = string.Empty;
         private string _subtitle;
+        private IDisposable _subscription;
 
         public string ImageLocation
         {
@@ -53,25 +58,42 @@ namespace Figroll.PersonalTrainer.ViewModels
             }
         }
 
-        public SessionViewModel(ITrainingSession trainingSession, IHostedScriptExecutor scriptExecutor)
+        public SessionViewModel(Dispatcher dispatcher, ITrainingSession trainingSession, IHostedScriptExecutor scriptExecutor,
+            string scriptFile)
         {
+            _dispatcher = dispatcher;
             _trainingSession = trainingSession;
             _scriptExecutor = scriptExecutor;
+            _scriptFile = scriptFile;
             _trainingSession.Trainer.Spoke += TrainerOnSpoke;
 
-            ImageLocation = @"D:\Milovana\Captions\sissydru4u 1-5\207507707.jpg";
+            _subscription = _trainingSession.Viewer.WhenPictureChanged.Subscribe(this.OnPictureChanged);
         }
+
+        private void OnPictureChanged(Picture picture)
+        {
+            _dispatcher.BeginInvoke(new Action(() => { ImageLocation = picture.Filename; }));
+        }
+
+//        private void OnBlankRequested(object sender, EventArgs eventArgs)
+//        {
+//            _dispatcher.BeginInvoke(new Action(() => { ImageLocation = string.Empty; }));
+//            
+//        }
+//
+//        private void OnPictureRequested(object sender, PictureRequestedEventArgs pictureRequestedEventArgs)
+//        {
+//            _dispatcher.BeginInvoke(new Action(() => { ImageLocation = pictureRequestedEventArgs.ImageLocation; }));
+//        }
 
         protected override void OnViewLoaded(object view)
         {
-            Task.Factory.StartNew(() => _scriptExecutor.Execute(DefaultScript)).ContinueWith(_ => OnScriptCompleted());
+            Task.Factory.StartNew(() => _scriptExecutor.Execute(_scriptFile)).ContinueWith(_ => OnScriptCompleted());
         }
-
-        private const string DefaultScript = "./scripts/default.csx";
 
         private void TrainerOnSpoke(object sender, SpokeEventArgs spokeEventArgs)
         {
-            Subtitle = spokeEventArgs.Words;
+            _dispatcher.BeginInvoke(new Action(() => { Subtitle = spokeEventArgs.Words; }));
         }
 
         public event EventHandler<ScriptResultEventArgs> ScriptCompleted;
@@ -80,6 +102,8 @@ namespace Figroll.PersonalTrainer.ViewModels
         {
             _trainingSession.Trainer.Spoke -= TrainerOnSpoke;
             ScriptCompleted?.Invoke(this, new ScriptResultEventArgs(_scriptExecutor.Result));
+
+            _subscription.Dispose();
         }
     }
 }

@@ -44,6 +44,11 @@ namespace Figroll.PersonalTrainer.Domain.Utilities
             return rng.Next(2) == 0;
         }
 
+        public static bool CoinFlipIsTails(this Random rng)
+        {
+            return rng.Next(2) == 1;
+        }
+
         public static bool IsPercentageChance(this Random rng, int percentageChance)
         {
             // zero based so 99 + 1 to make percentage chance more obvious.
@@ -53,6 +58,11 @@ namespace Figroll.PersonalTrainer.Domain.Utilities
         public static int ToMilliseconds(this int seconds)
         {
             return seconds * 1000;
+        }
+
+        public static int ToSeconds(this int milliseconds)
+        {
+            return milliseconds / 1000;
         }
     }
 }

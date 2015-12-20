@@ -1,11 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
+using System.IO;
 using System.Reflection;
+using System.Windows;
 using Caliburn.Micro;
 using Figroll.PersonalTrainer.Domain;
 using Figroll.PersonalTrainer.Domain.Scripting;
+using Figroll.PersonalTrainer.Domain.Utilities;
 using NLog;
 using LogManager = NLog.LogManager;
+using Screen = Caliburn.Micro.Screen;
 
 namespace Figroll.PersonalTrainer.ViewModels
 {
@@ -23,7 +29,7 @@ namespace Figroll.PersonalTrainer.ViewModels
 
         private readonly Logger _logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType?.ToString());
 
-        private string _displayName = "AUTO TRAINER";
+        private string _displayName = "PERSONAL TRAINER";
         private string _errorText;
 
         private AutoTrainerModes _autoTrainerMode;
@@ -67,7 +73,8 @@ namespace Figroll.PersonalTrainer.ViewModels
         {
             _trainingSession = trainingSession;
             _scriptExecutor = scriptExecutor;
-            _controller = new ControllerViewModel();
+
+            _controller = new ControllerViewModel(trainingSession, scriptExecutor);
             SetControlPanelState();
         }
 
@@ -108,13 +115,16 @@ namespace Figroll.PersonalTrainer.ViewModels
         {
             SetSessionState();
 
-            _session = new SessionViewModel(_trainingSession, _scriptExecutor);
+            _session = new SessionViewModel(Application.Current.Dispatcher, _trainingSession, _scriptExecutor, _controller.SelectedScript.ScriptFileName);
             _session.ScriptCompleted += OnScriptCompleted;
+
             ActivateItem(_session);
         }
 
         private void OnScriptCompleted(object sender, ScriptResultEventArgs args)
         {
+            EndSession();
+
             if (args.Result.CompileExceptionInfo != null)
             {
                 ErrorText = args.Result.CompileExceptionInfo.SourceException.Message;
@@ -123,8 +133,6 @@ namespace Figroll.PersonalTrainer.ViewModels
             {
                 ErrorText = args.Result.ExecuteExceptionInfo.SourceException.Message;
             }
-
-            EndSession();
         }
 
         private void EndSession()
