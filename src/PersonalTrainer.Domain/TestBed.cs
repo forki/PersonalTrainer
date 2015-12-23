@@ -1,4 +1,5 @@
 using System.Linq;
+using Figroll.PersonalTrainer.Domain.API;
 
 namespace Figroll.PersonalTrainer.Domain
 {
@@ -11,7 +12,10 @@ namespace Figroll.PersonalTrainer.Domain
             _.Content.Load("Collection");
 
             var gallery = _.Content.Gallery("Petra V");
-            _.Viewer.PlaySlideshow(gallery);
+            _.Viewer.PlaySlideshow(gallery, 4);
+
+            _.Metronome.BPM = 60;
+            _.Metronome.PlayUntilStopped();
         }
 
         public void Example_2()

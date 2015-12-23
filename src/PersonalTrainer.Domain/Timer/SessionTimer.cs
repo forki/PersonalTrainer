@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using Figroll.PersonalTrainer.Domain.API;
 
 namespace Figroll.PersonalTrainer.Domain.Timer
 {

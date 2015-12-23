@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using Caliburn.Micro;
 using Figroll.PersonalTrainer.Domain;
+using Figroll.PersonalTrainer.Domain.API;
 using Figroll.PersonalTrainer.Domain.Scripting;
 using Figroll.PersonalTrainer.Domain.Utilities;
 using NLog;

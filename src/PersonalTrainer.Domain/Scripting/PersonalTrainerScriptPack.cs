@@ -1,3 +1,4 @@
+using Figroll.PersonalTrainer.Domain.API;
 using ScriptCs.Contracts;
 
 namespace Figroll.PersonalTrainer.Domain.Scripting
@@ -23,6 +24,7 @@ namespace Figroll.PersonalTrainer.Domain.Scripting
 
         public void Terminate()
         {
+            _session.Dispose();
         }
     }
 }

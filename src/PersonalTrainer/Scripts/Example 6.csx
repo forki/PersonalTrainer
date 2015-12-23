@@ -1,36 +1,25 @@
-﻿void StrokePlease(int count, int bpm)
-{
-    _.Metronome.BPM = bpm;
-    _.Metronome.Play(count);
-    _.Metronome.WaitUntilPlayStops();
-}
+﻿var _ = Require<TrainingSession>();
 
-var _ = Require<TrainingSession>();
-
+// Lets load the content in the "Collection" folder.  This has three sub folders
+// (Mikela, Petra V and Rachel H) which are loaded as Galleries named after the 
+// folders which caontain the pictures.
 _.Content.Load("Collection");
 
+// We can get at these galleries using the name and then play a slideshow. And if 
+// use the continuous play metronome we have a very basic "show and stroke" session.
+
+_.Metronome.BPM = 120;
+_.Metronome.Play();
+
 var gallery = _.Content.Gallery("Petra V");
-_.ContentPlayer.Play(gallery);
+_.Viewer.PlaySlideshow(gallery, 5);
 
-_.ContentPlayer.WaitUntilComplete();
+// The slideshow will play at 5 seconds per picture while the metronome keeps a 
+// constant 120 bpm.  So that the script won't end we can wait here until the slideshow
+// is done just like we did with the metronome.
+_.Viewer.WaitUntilComplete();
 
-// Lets load the content in the "collection" folder.  This has three sub folders
-// (Mikela, Petra V and Rachel H) which are loaded as Galleries.
-//_.Content.Load("Collection");
-//
-//// Lets make the player do 10 strokes to each picture in the Petra V gallery
-//
-//// First select the Petra V gallery.
-//_.Content.SelectGallery("Petra V");
-//
-//// And then display the next picture until we run out with a simple while loop.
-//// And for each picture do 10 strokes.
-//while (_.Content.DisplayNext().IsPicture)
-//{
-//    StrokePlease(10, 120);
-//    _.Timer.Wait(1);
-//}
-//
+_.Metronome.Stop();
 _.Trainer.Say("Well done.");
 
 

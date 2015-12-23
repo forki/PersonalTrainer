@@ -5,6 +5,7 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading;
+using Figroll.PersonalTrainer.Domain.API;
 using Figroll.PersonalTrainer.Domain.Utilities;
 
 namespace Figroll.PersonalTrainer.Domain.Content
@@ -25,12 +26,12 @@ namespace Figroll.PersonalTrainer.Domain.Content
             _pictures = pictures;
         }
 
-        public void PlaySlideshow()
+        public void PlaySlideshow(int displaySeconds)
         {
-            PlaySlideshow(_pictures);
+            PlaySlideshow(_pictures, displaySeconds);
         }
 
-        public void PlaySlideshow(IEnumerable<Picture> pictures)
+        public void PlaySlideshow(IEnumerable<Picture> pictures, int displaySeconds)
         {
             _pictures = pictures;
 
@@ -41,7 +42,7 @@ namespace Figroll.PersonalTrainer.Domain.Content
                 _pictures.ForEach(p =>
                 {
                     _pictureChanged.OnNext(p);
-                    Thread.Sleep(1000);
+                    Thread.Sleep(displaySeconds.ToMilliseconds());
                 });
 
                 _pictureChanged.OnCompleted();
@@ -54,6 +55,18 @@ namespace Figroll.PersonalTrainer.Domain.Content
             _pictureChanged.OnNext(picture);
         }
 
+        public void Display(Picture picture, int thenPause)
+        {
+            Display(picture);
+            Thread.Sleep(thenPause.ToMilliseconds());
+        }
+
+        public void Display(int pauseThen, Picture picture, int thenPause = 0)
+        {
+            Thread.Sleep(thenPause.ToMilliseconds());
+            Display(picture, thenPause);
+        }
+
         public void Clear()
         {
             _pictureChanged.OnNext(BlankPicture);
@@ -61,7 +74,8 @@ namespace Figroll.PersonalTrainer.Domain.Content
 
         public void Clear(int thenPause)
         {
-            throw new NotImplementedException();
+            Clear();
+            Thread.Sleep(thenPause * 1000);
         }
 
         public IObservable<Picture> WhenPictureChanged => _pictureChanged.AsObservable();
@@ -69,7 +83,6 @@ namespace Figroll.PersonalTrainer.Domain.Content
         public void WaitUntilComplete()
         {
             // if IsPlaying to prevent deadlock?
-
             _slideshowStopped.WaitOne();
 
             // cannot async/await as scriptcs does not support it

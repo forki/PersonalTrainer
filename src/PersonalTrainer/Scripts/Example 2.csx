@@ -1,13 +1,14 @@
-﻿var _ = Require<Training_>();
+﻿var _ = Require<TrainingSession>();
 
-// Lets play 10 beats at 120 again.
-_.Metronome.BPM = 120;
-_.Metronome.Play(10);
+// Our other option for playing the metronome is continuous play like this.
+_.Metronome.BPM = 60;
+_.Metronome.PlayUntilStopped();
 
-// But this time lets wait until the beats finish.
-_.Metronome.WaitUntilPlayStops();
+// The metronome will now continue to play at 60 bpm until told to stop or the
+// script finishes.
 
-// The script will now pause until the 10 beats have 
-// finished and then go back to the script selection screen.
+// In this case we will use the Timer to wait 10 seconds.  After which the script 
+// will complete and the Metronome will stop.
+_.Timer.Wait(10);
 
 // On to Example 3!

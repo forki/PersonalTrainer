@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using Figroll.PersonalTrainer.Domain.API;
+using Figroll.PersonalTrainer.Domain.Beats;
 using Figroll.PersonalTrainer.Domain.Content;
 using ScriptCs;
 using ScriptCs.Contracts;
@@ -19,9 +21,9 @@ namespace Figroll.PersonalTrainer.Domain.Scripting
             _script.Root.Executor.AddReferenceAndImportNamespaces(new[]
             {
                 typeof (TrainingSession),
-                typeof (Metronome.Metronome),
-                typeof (Metronome.Sequencer),
-                typeof (Voice.TrainerVoice),
+                typeof (Metronome),
+                typeof (Sequencer),
+                typeof (Voice.Trainer),
                 typeof (Timer.SessionTimer),
                 typeof (Picture),
                 typeof (IContentViewer),

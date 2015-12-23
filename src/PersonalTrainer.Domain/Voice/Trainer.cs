@@ -6,13 +6,14 @@ using System.Reflection;
 using System.Speech.Synthesis;
 using System.Threading;
 using System.Threading.Tasks;
+using Figroll.PersonalTrainer.Domain.API;
 using Figroll.PersonalTrainer.Domain.Utilities;
 using NLog;
 
 namespace Figroll.PersonalTrainer.Domain.Voice
 {
     // ReSharper disable once ClassNeverInstantiated.Global
-    public sealed class TrainerVoice : ITrainerVoice
+    public sealed class Trainer : ITrainer
     {
         private const int TrainerSpeechEndPause = 500;
         private const int MilisecondsPerWord = 400;
@@ -30,7 +31,7 @@ namespace Figroll.PersonalTrainer.Domain.Voice
 
         public void UseDefaultVoice()
         {
-            _logger.Trace("Selecting detault voice");
+            _logger.Trace("Selecting default voice");
             UseVoice(string.Empty);
         }
 
@@ -148,6 +149,12 @@ namespace Figroll.PersonalTrainer.Domain.Voice
         {
             Say(text);
             Thread.Sleep(thenPause.ToMilliseconds());
+        }
+
+        public void Say(int pauseThen, string text, int thenPause = 0)
+        {
+            Thread.Sleep(pauseThen.ToMilliseconds());
+            Say(text, thenPause);
         }
 
         public void SayAsync(string text)

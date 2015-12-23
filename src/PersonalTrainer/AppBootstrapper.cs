@@ -4,8 +4,9 @@ using System.Linq;
 using Caliburn.Metro;
 using Caliburn.Micro;
 using Figroll.PersonalTrainer.Domain;
+using Figroll.PersonalTrainer.Domain.API;
+using Figroll.PersonalTrainer.Domain.Beats;
 using Figroll.PersonalTrainer.Domain.Content;
-using Figroll.PersonalTrainer.Domain.Metronome;
 using Figroll.PersonalTrainer.Domain.Scripting;
 using Figroll.PersonalTrainer.Domain.Timer;
 using Figroll.PersonalTrainer.Domain.Utilities;
@@ -34,7 +35,7 @@ namespace Figroll.PersonalTrainer
                 x.For<ITrainingSession>().Singleton().Use<TrainingSession>();
                 x.Forward<ITrainingSession, IScriptPackContext>();
 
-                x.For<ITrainerVoice>().Use<TrainerVoice>();
+                x.For<ITrainer>().Use<Trainer>();
                 x.For<ITimer>().Use<SessionTimer>();
                 x.For<IRandomNumberGenerator>().Use<RandomNumberGenerator>();
                 x.For<IMetronome>().Use<Metronome>();

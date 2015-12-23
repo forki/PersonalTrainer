@@ -1,6 +1,6 @@
 using System;
 
-namespace Figroll.PersonalTrainer.Domain.Metronome
+namespace Figroll.PersonalTrainer.Domain.Beats
 {
     public class MetronomeEventArgs : EventArgs
     {

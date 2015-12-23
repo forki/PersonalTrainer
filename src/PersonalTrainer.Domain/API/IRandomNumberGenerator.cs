@@ -1,4 +1,4 @@
-namespace Figroll.PersonalTrainer.Domain.Content
+namespace Figroll.PersonalTrainer.Domain.API
 {
     public interface IRandomNumberGenerator
     {

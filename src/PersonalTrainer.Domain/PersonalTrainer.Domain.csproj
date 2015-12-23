@@ -115,22 +115,24 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="API\IContentCollection.cs" />
+    <Compile Include="API\IContentViewer.cs" />
+    <Compile Include="API\IGallery.cs" />
+    <Compile Include="API\IMetronome.cs" />
+    <Compile Include="API\IRandomNumberGenerator.cs" />
+    <Compile Include="API\ISequencer.cs" />
+    <Compile Include="API\ITimer.cs" />
+    <Compile Include="API\ITrainer.cs" />
+    <Compile Include="API\ITrainingSession.cs" />
     <Compile Include="Content\ContentCollection.cs" />
     <Compile Include="Content\ContentPlayer.cs" />
     <Compile Include="Content\Gallery.cs" />
-    <Compile Include="Content\IContentCollection.cs" />
-    <Compile Include="Content\IGallery.cs" />
-    <Compile Include="Content\IRandomNumberGenerator.cs" />
-    <Compile Include="Content\IContentViewer.cs" />
     <Compile Include="Content\Picture.cs" />
     <Compile Include="Content\PictureInfo.cs" />
     <Compile Include="Content\PictureRequestedEventArgs.cs" />
-    <Compile Include="ITrainingSession.cs" />
-    <Compile Include="Metronome\IMetronome.cs" />
-    <Compile Include="Metronome\ISequencer.cs" />
-    <Compile Include="Metronome\Metronome.cs" />
-    <Compile Include="Metronome\MetronomeEventArgs.cs" />
-    <Compile Include="Metronome\Sequencer.cs" />
+    <Compile Include="Beats\Metronome.cs" />
+    <Compile Include="Beats\MetronomeEventArgs.cs" />
+    <Compile Include="Beats\Sequencer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripting\PersonalTrainerConsole.cs" />
     <Compile Include="Scripting\PersonalTrainerScriptPack.cs" />
@@ -139,16 +141,14 @@
     <Compile Include="Scripting\ScriptCsHost.cs" />
     <Compile Include="Scripting\ScriptFileSystem.cs" />
     <Compile Include="TestBed.cs" />
-    <Compile Include="Timer\ITimer.cs" />
     <Compile Include="Timer\SessionTimer.cs" />
     <Compile Include="Timer\TimerEventArgs.cs" />
     <Compile Include="TrainingSession.cs" />
     <Compile Include="Utilities\ExtensionMethods.cs" />
     <Compile Include="Utilities\RandomNumberGenerator.cs" />
     <Compile Include="Utilities\RandomProvider.cs" />
-    <Compile Include="Voice\ITrainerVoice.cs" />
     <Compile Include="Voice\SpokeEventArgs.cs" />
-    <Compile Include="Voice\TrainerVoice.cs" />
+    <Compile Include="Voice\Trainer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

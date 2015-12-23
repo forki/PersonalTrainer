@@ -3,10 +3,10 @@
 // Beats are all very well but what about something to look at?
 // As well as a Metronome, your PERSONAL TRAINER can also display Content.
 
-// We just need to tell PERSONAL TRAINER where the content we want is.
+// We first need to tell PERSONAL TRAINER where the content we want is.
 // This will load the Pictures folder from the directory in which PERSONAL TRAINER
 // was installed.
-//_.Content.Load("Pictures");
+_.Content.Load("Pictures");
 
 // We can also load from a completely different directory so this would work exactly as you 
 // might expect.  (We need the @ to stop the \s confusing C#)

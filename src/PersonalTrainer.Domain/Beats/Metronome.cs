@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Linq;
 using System.Media;
 using System.Reflection;
 using System.Threading;
+using Figroll.PersonalTrainer.Domain.API;
 using NLog;
 
-namespace Figroll.PersonalTrainer.Domain.Metronome
+namespace Figroll.PersonalTrainer.Domain.Beats
 {
     public class Metronome : IMetronome
     {
@@ -69,6 +69,7 @@ namespace Figroll.PersonalTrainer.Domain.Metronome
         public void PlayUntilStopped()
         {
             SetContinuousPlay();
+            Play();
         }
 
         private void SetContinuousPlay()
@@ -100,7 +101,6 @@ namespace Figroll.PersonalTrainer.Domain.Metronome
             DoPlay();
         }
 
-
         protected virtual void DoPlay()
         {
             var milliseconds = (int) (1000.0/(BPM/60.0));
@@ -116,14 +116,9 @@ namespace Figroll.PersonalTrainer.Domain.Metronome
         {
             _soundPlayer.Play();
 
-            if (IsContinuousPlay())
-            {
-                OnMetronomeTicked(new MetronomeEventArgs(int.MinValue, int.MinValue));
-            }
-            else
-            {
-                OnMetronomeTicked(new MetronomeEventArgs(Count - Remaining + 1, Remaining + 1));
-            }
+            OnMetronomeTicked(IsContinuousPlay()
+                ? new MetronomeEventArgs(int.MinValue, int.MinValue)
+                : new MetronomeEventArgs(Count - Remaining + 1, Remaining + 1));
 
             if (isBarEnd)
             {
@@ -131,7 +126,7 @@ namespace Figroll.PersonalTrainer.Domain.Metronome
             }
         }
 
-        protected virtual void EndBar()
+        protected void EndBar()
         {
             _remaining--;
             if (_remaining <= 0 && !IsContinuousPlay())

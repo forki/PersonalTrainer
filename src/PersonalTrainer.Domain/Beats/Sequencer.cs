@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using Figroll.PersonalTrainer.Domain.API;
 
-namespace Figroll.PersonalTrainer.Domain.Metronome
+namespace Figroll.PersonalTrainer.Domain.Beats
 {
     public class Sequencer : Metronome, ISequencer
     {

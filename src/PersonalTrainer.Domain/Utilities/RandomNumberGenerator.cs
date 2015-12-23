@@ -1,4 +1,5 @@
 using System;
+using Figroll.PersonalTrainer.Domain.API;
 using Figroll.PersonalTrainer.Domain.Content;
 
 namespace Figroll.PersonalTrainer.Domain.Utilities

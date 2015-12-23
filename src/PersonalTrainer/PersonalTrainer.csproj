@@ -125,6 +125,7 @@
     </Compile>
     <Compile Include="Converters\NullOrEmptyVisibilityConverter.cs" />
     <Compile Include="Converters\NullVisibilityConverter.cs" />
+    <Compile Include="ScriptResultEventArgs.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="ViewModels\AppViewModel.cs" />
     <Compile Include="App.cs">

@@ -4,13 +4,14 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Figroll.PersonalTrainer.Domain.API;
 using NLog;
 
 namespace Figroll.PersonalTrainer.Domain.Content
 {
     public class ContentCollection : IContentCollection
     {
-        private readonly Logger _logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType.ToString());
+        private readonly Logger _logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType?.ToString());
 
         private string _mediaBaseDirectory;
         private readonly Dictionary<string, List<Picture>> _content = new Dictionary<string, List<Picture>>();

@@ -1,4 +1,4 @@
-namespace Figroll.PersonalTrainer.Domain.Metronome
+namespace Figroll.PersonalTrainer.Domain.API
 {
     public interface ISequencer: IMetronome
     {

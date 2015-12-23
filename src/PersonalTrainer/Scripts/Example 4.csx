@@ -1,29 +1,32 @@
-﻿var _ = Require<TrainingSession>();
+﻿void StrokePlease(int count, int bpm)
+{
+    _.Metronome.BPM = bpm;
+    _.Metronome.Play(count);
+    _.Metronome.WaitUntilPlayStops();
+}
+
+var _ = Require<TrainingSession>();
 
 // Some people need to be told what to do.
 // So lets do 10 strokes to blue socks again but have our trainer tell the player what
 // is expected of him / her / them :-)
 
 _.Content.Load("Pictures");
-
-_.Content.Load("Pictures");
-_.Content.Display("blue socks.jpg");
-
-var picture = _.Content.Pictures.First();
-_.ContentViewer.Display(picture);
-_.Timer.Wait(3);
-
+_.Viewer.Display(_.Content.Pictures.First(), 1);
 
 // This will display a subtitle on top of the blue socks picture.
+// Note that the subtitle will be displayed for a brief time to give the 
+// player time to read.  The time is based on the on the number of words 
+// being displayed.
 _.Trainer.Say("Ten strokes please.");
+StrokePlease(10, 120);
 
-_.Metronome.BPM = 120;
-_.Metronome.Play(10);
+// Congratulate the player, wait 3 seconds and then exit.
+// Note as well as a little pause after displaying the message
+// we can do one before as well.
+// So this will pause 1 second, display "Well done!" then pause 1 second.
+_.Trainer.Say(1, "Well done.", 1);
 
-// And wait until the beats are done.
-_.Metronome.WaitUntilPlayStops();
+// Next up in Example 5 we will look at random numbers.
 
-_.Trainer.Say("Well done.");
-
-// In example 5 we will add some random numbers and show how we can introduce delays and timers.
 

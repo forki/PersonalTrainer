@@ -5,25 +5,15 @@ using System.Threading.Tasks;
 using System.Windows.Threading;
 using Caliburn.Micro;
 using Figroll.PersonalTrainer.Domain;
+using Figroll.PersonalTrainer.Domain.API;
 using Figroll.PersonalTrainer.Domain.Content;
 using Figroll.PersonalTrainer.Domain.Scripting;
 using Figroll.PersonalTrainer.Domain.Voice;
-using ScriptCs.Contracts;
 using Action = System.Action;
 using LogManager = NLog.LogManager;
 
 namespace Figroll.PersonalTrainer.ViewModels
 {
-    public class ScriptResultEventArgs : EventArgs
-    {
-        public ScriptResult Result { get; private set; }
-
-        public ScriptResultEventArgs(ScriptResult result)
-        {
-            Result = result;
-        }
-    }
-
     [Export(typeof (SessionViewModel))]
     public sealed class SessionViewModel : Screen
     {
@@ -75,17 +65,6 @@ namespace Figroll.PersonalTrainer.ViewModels
             _dispatcher.BeginInvoke(new Action(() => { ImageLocation = picture.Filename; }));
         }
 
-//        private void OnBlankRequested(object sender, EventArgs eventArgs)
-//        {
-//            _dispatcher.BeginInvoke(new Action(() => { ImageLocation = string.Empty; }));
-//            
-//        }
-//
-//        private void OnPictureRequested(object sender, PictureRequestedEventArgs pictureRequestedEventArgs)
-//        {
-//            _dispatcher.BeginInvoke(new Action(() => { ImageLocation = pictureRequestedEventArgs.ImageLocation; }));
-//        }
-
         protected override void OnViewLoaded(object view)
         {
             Task.Factory.StartNew(() => _scriptExecutor.Execute(_scriptFile)).ContinueWith(_ => OnScriptCompleted());
@@ -104,6 +83,7 @@ namespace Figroll.PersonalTrainer.ViewModels
             ScriptCompleted?.Invoke(this, new ScriptResultEventArgs(_scriptExecutor.Result));
 
             _subscription.Dispose();
+            _trainingSession.Dispose();
         }
     }
 }
