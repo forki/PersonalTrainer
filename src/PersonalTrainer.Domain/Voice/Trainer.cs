@@ -151,10 +151,10 @@ namespace Figroll.PersonalTrainer.Domain.Voice
             Thread.Sleep(thenPause.ToMilliseconds());
         }
 
-        public void Say(int pauseThen, string text, int thenPause = 0)
+        public void Say(int pauseThen, string text)
         {
             Thread.Sleep(pauseThen.ToMilliseconds());
-            Say(text, thenPause);
+            Say(text);
         }
 
         public void SayAsync(string text)

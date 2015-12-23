@@ -11,6 +11,7 @@ namespace Figroll.PersonalTrainer.Domain.Beats
     {
         private readonly Logger _logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType.ToString());
 
+        private const int ContinuousPlay = Int32.MaxValue;
         private const int DefaultSpeed = 120;
         private const int MinBPM = 1;
         private const int MaxBPM = 300;
@@ -66,25 +67,14 @@ namespace Figroll.PersonalTrainer.Domain.Beats
             return _playStopped.WaitOne(0);
         }
 
-        public void PlayUntilStopped()
-        {
-            SetContinuousPlay();
-            Play();
-        }
-
-        private void SetContinuousPlay()
-        {
-            Count = int.MaxValue;
-        }
-
         private bool IsContinuousPlay()
         {
-            return Count == int.MaxValue;
+            return Count == ContinuousPlay;
         }
 
         public void Play()
         {
-            Play(int.MaxValue, BPM);
+            Play(Count, BPM);
         }
 
         public void Play(int count)
@@ -95,6 +85,7 @@ namespace Figroll.PersonalTrainer.Domain.Beats
         public void Play(int count, int bpm)
         {
             _playStopped.Reset();
+
             BPM = bpm;
             Count = count;
 
@@ -103,8 +94,8 @@ namespace Figroll.PersonalTrainer.Domain.Beats
 
         protected virtual void DoPlay()
         {
-            var milliseconds = (int) (1000.0/(BPM/60.0));
-            BeatTimer.Change(milliseconds, milliseconds);
+            var beatIntervalMilliseconds = (int) (1000.0/(BPM/60.0));
+            BeatTimer.Change(beatIntervalMilliseconds, beatIntervalMilliseconds);
         }
 
         protected virtual void OnTick(object state)
@@ -129,21 +120,27 @@ namespace Figroll.PersonalTrainer.Domain.Beats
         protected void EndBar()
         {
             _remaining--;
+
             if (_remaining <= 0 && !IsContinuousPlay())
             {
                 Stop();
             }
         }
 
-        public void Stop()
+        public void Start()
         {
-            BeatTimer.Change(Timeout.Infinite, Timeout.Infinite);
-            _playStopped.Set();
+            Play(ContinuousPlay, BPM);
         }
 
         public void WaitUntilPlayStops()
         {
             _playStopped.WaitOne();
+        }
+
+        public void Stop()
+        {
+            BeatTimer.Change(Timeout.Infinite, Timeout.Infinite);
+            _playStopped.Set();
         }
 
         public event EventHandler<MetronomeEventArgs> Ticked;

@@ -16,7 +16,7 @@ namespace Figroll.PersonalTrainer.Domain.API
 
         void Display(Picture picture);
         void Display(Picture picture, int thenPause);
-        void Display(int pauseThen, Picture picture, int thenPause = 0);
+        void Display(int pauseThen, Picture picture);
 
         // Should be a DisplayNext()
 

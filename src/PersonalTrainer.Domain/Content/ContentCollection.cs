@@ -29,6 +29,7 @@ namespace Figroll.PersonalTrainer.Domain.Content
 
             _mediaBaseDirectory = Directory.GetParent(Path.GetFullPath(mediaDirectory)).FullName;
 
+            _content.Clear();
             LoadMedia(mediaDirectory, extensions);
             RemoveEmptyGalleries();
 

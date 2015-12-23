@@ -9,8 +9,11 @@ namespace Figroll.PersonalTrainer.Domain.API
         void Load(string mediaDirectory, string[] extensions);
 
         IEnumerable<Picture> Pictures { get; }
-        IEnumerable<Picture> Gallery(string name);
-        IEnumerable<string> Galleries { get; }
+
+        IEnumerable<IGallery> Galleries { get; }
+        IGallery Gallery(string name);
+
+        IEnumerable<string> GalleryNames { get; }
 
         Picture GetPicture(string name);
         Picture GetPicture(string gallery, string name);

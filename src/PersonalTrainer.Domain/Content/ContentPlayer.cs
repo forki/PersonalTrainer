@@ -61,7 +61,13 @@ namespace Figroll.PersonalTrainer.Domain.Content
             Thread.Sleep(thenPause.ToMilliseconds());
         }
 
-        public void Display(int pauseThen, Picture picture, int thenPause = 0)
+        public void Display(int pauseThen, Picture picture)
+        {
+            Thread.Sleep(pauseThen.ToMilliseconds());
+            Display(picture);
+        }
+
+        public void Display(int pauseThen, Picture picture, int thenPause)
         {
             Thread.Sleep(thenPause.ToMilliseconds());
             Display(picture, thenPause);

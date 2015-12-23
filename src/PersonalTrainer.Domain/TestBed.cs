@@ -15,7 +15,7 @@ namespace Figroll.PersonalTrainer.Domain
             _.Viewer.PlaySlideshow(gallery, 4);
 
             _.Metronome.BPM = 60;
-            _.Metronome.PlayUntilStopped();
+            _.Metronome.Start();
         }
 
         public void Example_2()

@@ -109,14 +109,9 @@ _.Trainer.UseVoice("Amy");
 
 while (true)
 {
-    DoLevelOne();
-    DoLongerRest(rests.ElementAt(_.RNG.Between(0, rests.Count())));
-    DoLevelOne();
-    DoLongerRest(rests.ElementAt(_.RNG.Between(0, rests.Count())));
     DoLevelOnePointFive();
-    DoLongerRest(rests.ElementAt(_.RNG.Between(0, rests.Count())));
     DoLevelTwo();
-    DoLongerRest(rests.ElementAt(_.RNG.Between(0, rests.Count())));
+    DoLevelThree();
 }
 
 //_.Metronome.BPM = 60;

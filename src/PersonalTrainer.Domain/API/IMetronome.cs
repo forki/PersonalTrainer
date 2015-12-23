@@ -12,9 +12,11 @@ namespace Figroll.PersonalTrainer.Domain.API
         void Play();
         void Play(int count);
         void Play(int count, int bpm);
-        void PlayUntilStopped();
-        void WaitUntilPlayStops();
+
+        void Start();
         void Stop();
+
+        void WaitUntilPlayStops();
 
         event EventHandler<MetronomeEventArgs> Ticked;
     }
