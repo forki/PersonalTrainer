@@ -14,13 +14,12 @@ namespace Figroll.PersonalTrainer.Domain.Content
         private readonly Logger _logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType?.ToString());
 
         private string _mediaBaseDirectory;
-        private readonly Dictionary<string, List<Picture>> _content = new Dictionary<string, List<Picture>>();
+        private readonly Dictionary<string, Gallery> _content = new Dictionary<string, Gallery>();
         private IEnumerable<Picture> _allPictures;
 
         public void Load(string mediaDirectory)
         {
-            Load(mediaDirectory, new []{ ".jpg", ".png"});
-            _allPictures = _content.Values.SelectMany(p => p);
+            Load(mediaDirectory, new[] {".jpg", ".png"});
         }
 
         public void Load(string mediaDirectory, string[] extensions)
@@ -31,9 +30,8 @@ namespace Figroll.PersonalTrainer.Domain.Content
 
             _content.Clear();
             LoadMedia(mediaDirectory, extensions);
-            RemoveEmptyGalleries();
 
-            _allPictures = _content.Values.SelectMany(p => p);
+            _allPictures = _content.Values.SelectMany(p => p.Pictures);
         }
 
 
@@ -45,17 +43,17 @@ namespace Figroll.PersonalTrainer.Domain.Content
                 var galleryName = Path.GetFileNameWithoutExtension(mediaDirectory);
 
                 Debug.Assert(galleryName != null, "galleryName != null");
-                _content.Add(galleryName, new List<Picture>());
 
-                foreach (var file in files)
+                var pictures = (from file in files
+                    let ext = Path.GetExtension(file)
+                    where ext != null && extensions.Contains(ext.ToLower())
+                    let name = Path.GetFileName(file)
+                    let filename = Path.Combine(_mediaBaseDirectory, file)
+                    select new Picture(name, filename)).ToList();
+
+                if (pictures.Count > 0)
                 {
-                    var ext = Path.GetExtension(file);
-                    if (ext == null || !extensions.Contains(ext.ToLower())) continue;
-
-                    var name = Path.GetFileNameWithoutExtension(file);
-                    var filename = Path.Combine(_mediaBaseDirectory, file);
-
-                    _content[galleryName].Add(new Picture(name, filename));
+                    _content.Add(galleryName, new Gallery(galleryName, pictures));
                 }
 
                 foreach (var subdirectory in Directory.GetDirectories(mediaDirectory))
@@ -69,14 +67,9 @@ namespace Figroll.PersonalTrainer.Domain.Content
             }
         }
 
-        private void RemoveEmptyGalleries()
-        {
-            var emptyGalleries = _content.Where(x => x.Value.Count == 0).ToList();
-            emptyGalleries.ForEach(g => _content.Remove(g.Key));
-        }
-
         IEnumerable<Picture> IContentCollection.Pictures => _allPictures;
-        IEnumerable<string> IContentCollection.Galleries => _content.Keys;
+        public IEnumerable<IGallery> Galleries => _content.Values;
+        public IEnumerable<string> GalleryNames => _content.Keys;
 
         public Picture GetPicture(string name)
         {
@@ -88,7 +81,7 @@ namespace Figroll.PersonalTrainer.Domain.Content
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Picture> Gallery(string name)
+        public IGallery Gallery(string name)
         {
             return _content[name];
         }

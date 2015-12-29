@@ -13,8 +13,7 @@ _.Content.Load("Pictures");
 //_.Content.Load(@"C:\My Collection\Pictures");
 
 // The Pictures folder has one picture in it called "blue socks.jpg" which we can display like this.
-// (Note we don't need the .jpg extension).
-var picture = _.Content.GetPicture("blue socks");
+var picture = _.Content.GetPicture("blue socks.jpg");
 _.Viewer.Display(picture);
 
 // The picture is now on the screen and our script continues.

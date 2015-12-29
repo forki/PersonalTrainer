@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Figroll.PersonalTrainer.Domain.API;
 using Figroll.PersonalTrainer.Domain.Beats;
 using Figroll.PersonalTrainer.Domain.Content;
+using Figroll.PersonalTrainer.Domain.Utilities;
 using ScriptCs;
 using ScriptCs.Contracts;
 
@@ -28,7 +29,8 @@ namespace Figroll.PersonalTrainer.Domain.Scripting
                 typeof (Picture),
                 typeof (IContentViewer),
                 typeof (IContentCollection),
-                typeof (PictureInfo)
+                typeof (PictureInfo),
+                typeof (ExtensionMethods)
             });
         }
 

@@ -19,13 +19,10 @@ _.Viewer.Display(_.Content.Pictures.First(), 1);
 // player time to read.  The display time is based on the on the number of words 
 // being displayed.
 _.Trainer.Say("Ten strokes please.");
-StrokePlease(10, 120);
-_.Viewer.Clear(1);
 
-// Congratulate the player, wait 3 seconds and then exit.
-// Note as well as a little pause after displaying the message
-// we can do one before as well.
-// So this will pause 1 second, display "Well done!" then pause 1 second.
+StrokePlease(10, 120);
+
+_.Viewer.Clear();
 _.Trainer.Say("Well done.", 1);
 
 // Next up in Example 5 we will look at random numbers.

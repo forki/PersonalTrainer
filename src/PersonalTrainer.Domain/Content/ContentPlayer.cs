@@ -21,6 +21,11 @@ namespace Figroll.PersonalTrainer.Domain.Content
         private IEnumerable<Picture> _pictures = Enumerable.Empty<Picture>();
         private IObservable<Unit> _currentPlayback;
 
+        public void Load(IGallery gallery)
+        {
+            Load(gallery.Pictures);
+        }
+
         public void Load(IEnumerable<Picture> pictures)
         {
             _pictures = pictures;
@@ -29,6 +34,11 @@ namespace Figroll.PersonalTrainer.Domain.Content
         public void PlaySlideshow(int displaySeconds)
         {
             PlaySlideshow(_pictures, displaySeconds);
+        }
+
+        public void PlaySlideshow(IGallery gallery, int displaySeconds)
+        {
+            PlaySlideshow(gallery.Pictures, displaySeconds);
         }
 
         public void PlaySlideshow(IEnumerable<Picture> pictures, int displaySeconds)
@@ -45,7 +55,6 @@ namespace Figroll.PersonalTrainer.Domain.Content
                     Thread.Sleep(displaySeconds.ToMilliseconds());
                 });
 
-                _pictureChanged.OnCompleted();
                 _slideshowStopped.Set();
             });
         }

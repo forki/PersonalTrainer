@@ -3,7 +3,7 @@ using Figroll.PersonalTrainer.Domain.API;
 
 namespace Figroll.PersonalTrainer.Domain.Content
 {
-    public class Gallery : IGallery
+    public partial class Gallery : IGallery
     {
         public string Name { get; private set; }
         public IEnumerable<Picture> Pictures { get; private set; }

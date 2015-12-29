@@ -6,7 +6,8 @@
 _.Content.Load("Collection");
 
 // We can get at these galleries using the name and then play a slideshow. And if 
-// use set the metronome in continuous play we have a very basic "show and stroke" session.
+// use set the metronome in continuous play mode we have a very basic "show and stroke" 
+// session.
 _.Metronome.BPM = 120;
 _.Metronome.Start();
 

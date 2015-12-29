@@ -1,5 +1,6 @@
 using System.Linq;
 using Figroll.PersonalTrainer.Domain.API;
+using Figroll.PersonalTrainer.Domain.Utilities;
 
 namespace Figroll.PersonalTrainer.Domain
 {
@@ -21,6 +22,7 @@ namespace Figroll.PersonalTrainer.Domain
         public void Example_2()
         {
             _.Content.Load("Collection");
+            _.Trainer.UseVoice("Amy");
 
             var picture = _.Content.Pictures.First();
             _.Viewer.Display(picture);
@@ -28,12 +30,25 @@ namespace Figroll.PersonalTrainer.Domain
             picture = _.Content.Pictures.Single(p => p.Name == "Blue Socks.jpg");
             _.Viewer.Display(picture);
 
+            _.Metronome.WaitUntilPlayStops();
             _.Timer.Wait(3);
         }
 
         public void Example_3()
         {
             _.Content.Load("Collection");
+
+            var shuffledGalleries = _.Content.Galleries.Shuffle();
+
+            foreach (var gallery in shuffledGalleries)
+            {
+                _.Viewer.PlaySlideshow(gallery.Pictures.Shuffle(), 1);
+            }
+
+            _.Content.Galleries.ForEach(g =>
+            {
+                _.Viewer.PlaySlideshow(g, 1);
+            });
 
             var picture = _.Content.GetPicture("blue socks");
 

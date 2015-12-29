@@ -11,10 +11,13 @@ void StrokePlease(int count, int bpm)
 
 _.Content.Load("Pictures");
 
-// Indeed we can do (almost) anything here we can do in C# only in a script with a text editor.
+// Indeed we can do (almost) anything here we can do in C# only as a script with a text editor
+// instead of a development environment and compiler.
 // So lets make a loop and have the player do an increasing number of strokes at an increasing 
-// pace each time around the loop.  Still only one picture but we will get more very soon.
+// pace each time around the loop.  Still only one picture but we will get to multiple pictures
+// very soon.
 
+// Let's start at 10 strokes at 60bpm.
 int bpm = 60;
 int count = 10;
 
@@ -30,12 +33,12 @@ for (int i = 0; i < 3; i++)
     _.Viewer.Display(picture, 1);
 
     // Which is identical to these two statements
-    // _.Viewer.Display(picture, 1);
-    // _.Timer.Wait(3);
+    //      _.Viewer.Display(picture);
+    //      _.Timer.Wait(1);
 
     // The picture has been displayed, we have paused for one second so the player can 
-    // take it in, lets call our function and get them to do count strokes at the
-    // current bpm setting.
+    // take it in, lets call our function and get them to do count strokes at a speed 
+    // of bpm.
     StrokePlease(count, bpm);
 
     // We can clear the screen by calling Viewer.Clear()
@@ -43,7 +46,7 @@ for (int i = 0; i < 3; i++)
     //    _.Viewer.Clear();
     //    _.Timer.Wait(3);
     
-    // Or again we could do both in one statement:
+    // Or again we could do both in one line:
     _.Viewer.Clear(3);
 
     // Increase the speed and number of strokes for the next view.

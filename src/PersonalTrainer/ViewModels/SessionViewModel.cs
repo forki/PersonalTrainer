@@ -4,7 +4,6 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 using Caliburn.Micro;
-using Figroll.PersonalTrainer.Domain;
 using Figroll.PersonalTrainer.Domain.API;
 using Figroll.PersonalTrainer.Domain.Content;
 using Figroll.PersonalTrainer.Domain.Scripting;

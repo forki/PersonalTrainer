@@ -29,6 +29,7 @@ namespace Figroll.PersonalTrainer.Domain.Utilities
         public static void Shuffle<T>(this IList<T> list)
         {
             var n = list.Count;
+
             while (n > 1)
             {
                 n--;
@@ -37,6 +38,14 @@ namespace Figroll.PersonalTrainer.Domain.Utilities
                 list[k] = list[n];
                 list[n] = value;
             }
+        }
+
+        public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> list)
+        {
+            var shuffledCopy = list.ToList();
+            shuffledCopy.Shuffle();
+
+            return shuffledCopy;
         }
 
         public static bool CoinFlipIsHeads(this Random rng)

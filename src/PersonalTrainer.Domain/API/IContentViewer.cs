@@ -7,8 +7,10 @@ namespace Figroll.PersonalTrainer.Domain.API
     public interface IContentViewer
     {
         void Load(IEnumerable<Picture> pictures);
+        void Load(IGallery gallery);
 
         void PlaySlideshow(int displaySeconds);
+        void PlaySlideshow(IGallery gallery, int displaySeconds);
         void PlaySlideshow(IEnumerable<Picture> pictures, int displaySeconds);
 
         IObservable<Picture> WhenPictureChanged { get; }

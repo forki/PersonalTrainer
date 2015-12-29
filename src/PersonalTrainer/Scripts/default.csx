@@ -8,13 +8,13 @@
 
 public void DoRest(int seconds)
 {
-	_.Timer.Wait(seconds);
+    _.Timer.Wait(seconds);
 }
 
 public void DoLongerRest(int seconds)
 {
-	_.Trainer.SayAsync("Longer rest now.");
-	_.Timer.Wait(seconds);
+    _.Trainer.SayAsync("Rest now.");
+    _.Timer.Wait(seconds);
 }
 
 void DoExercise()
@@ -27,7 +27,7 @@ void DoExercise()
 		var time = times.ElementAt(_.RNG.Between(0, times.Count()));
 
 		DoSet(time, speed);
-		DoRest(10);
+		DoRest(_.RNG.Between(8, 16));
 	}
 }
 
@@ -43,6 +43,8 @@ public void DoLevelOne()
     DoExercise();
 
     _.Trainer.Say("Well done.");
+
+    DoLongerRest(_.RNG.Between(16, 24));
 }
 
 public void DoLevelOnePointFive()
@@ -109,9 +111,10 @@ _.Trainer.UseVoice("Amy");
 
 while (true)
 {
-    DoLevelOnePointFive();
+    DoLevelOne();
+    DoLevelOne();
+    DoLevelOne();
     DoLevelTwo();
-    DoLevelThree();
 }
 
 //_.Metronome.BPM = 60;
