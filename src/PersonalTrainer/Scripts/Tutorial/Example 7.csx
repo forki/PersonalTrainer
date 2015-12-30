@@ -1,4 +1,5 @@
-﻿var _ = Require<TrainingSession>();
+﻿// How to play multiple galleries from our loaded collection.
+var _ = Require<TrainingSession>();
 
 _.Content.Load("Collection");
 
@@ -10,14 +11,13 @@ _.Metronome.Start();
 
 foreach (var gallery in _.Content.Galleries)
 {
-    _.Viewer.PlaySlideshow(gallery, 1);
+    _.Viewer.PlaySlideshow(gallery, 3);
 
-    // The slideshow will play at 5 seconds per picture while the metronome keeps a 
+    // The slideshow will play at 3 seconds per picture while the metronome keeps a 
     // constant 120 bpm. Again becuase the slideshow is playing in the background we
     // need to wait until it's finished before moving on to the next gallery.
     _.Viewer.WaitUntilComplete();
-    }
-
-    _.Metronome.Stop();
-    _.Trainer.Say("Well done.");
 }
+
+_.Metronome.Stop();
+_.Trainer.Say("Well done.");

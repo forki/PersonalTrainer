@@ -1,4 +1,6 @@
-﻿void StrokePlease(int count, int bpm)
+﻿// How to have your trainer speak.
+
+void StrokePlease(int count, int bpm)
 {
     _.Metronome.BPM = bpm;
     _.Metronome.Play(count);

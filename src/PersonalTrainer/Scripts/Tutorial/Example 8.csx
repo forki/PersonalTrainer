@@ -1,4 +1,5 @@
-﻿var _ = Require<TrainingSession>();
+﻿// How to randomise the display of pictures and galleries.
+var _ = Require<TrainingSession>();
 
 _.Content.Load("Collection");
 
@@ -22,8 +23,7 @@ foreach (var gallery in shuffledGalleries)
     _.Viewer.PlaySlideshow(shuffledPictures, 1);
 
     _.Viewer.WaitUntilComplete();
-    }
-
-    _.Metronome.Stop();
-    _.Trainer.Say("Well done.");
 }
+
+_.Metronome.Stop();
+_.Trainer.Say("Well done.");
