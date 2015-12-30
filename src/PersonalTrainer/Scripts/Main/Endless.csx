@@ -3,39 +3,39 @@
 
 var _ = Require<TrainingSession>();
 
-    public void DoRest(int seconds)
+public void DoRest(int seconds)
 {
     _.Timer.Wait(seconds);
-    }
+}
 
-    public void DeepHard()
+public void DeepHard()
 {
     _.Trainer.Say("Deep. Hard. Strokes.");
     _.Metronome.Play(10, 60);
     _.Metronome.WaitUntilPlayStops();
-    }
+}
 
-    public void NextLevel()
+public void NextLevel()
 {
     _.Trainer.Say("Cum for those cocks.");
     _.Metronome.Play(10, 120);
     _.Metronome.WaitUntilPlayStops();
-    }
+}
 
-    _.Trainer.UseVoice("Amy");
-    _.Content.Load("xmas");
+_.Trainer.UseVoice("Amy");
+_.Content.Load("xmas");
 
-    _.Trainer.Say("We are going to make you cum", 1);
+_.Trainer.Say("We are going to make you cum", 1);
 
-    while (true)
+while (true)
 {
     var loops = _.RNG.Between(5, 10);
     _.Timer.Wait(loops);
 
     while (loops-- > 0)
-{
-    DeepHard();
-    DoRest(_.RNG.Between(3, 5));
+    {
+        DeepHard();
+        DoRest(_.RNG.Between(3, 5));
     }
 
     DoRest(20);
@@ -44,7 +44,7 @@ var _ = Require<TrainingSession>();
     _.Timer.Wait(loops);
 
     while (loops-- > 0)
-{
+    {
     NextLevel();
     DoRest(_.RNG.Between(3, 5));
     }
@@ -75,5 +75,4 @@ var _ = Require<TrainingSession>();
     _.Metronome.Play(40, 180);
     _.Metronome.WaitUntilPlayStops();
     DoRest(10);
-    }
 }
