@@ -2,6 +2,7 @@
 * text=auto
 
 *.cs     text diff=csharp
+*.csx     text diff=csharp
 *.html   text diff=html
 *.css    text
 *.js     text
@@ -12,6 +13,7 @@
 *.jpg binary
 *.mp3 binary
 *.wav binary
+*.gif binary
 
 # Visual Studio
 *.csproj text merge=union

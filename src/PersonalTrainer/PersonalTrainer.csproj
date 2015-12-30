@@ -236,7 +236,9 @@
     <Content Include="Scripts\Main\NextPicture.csx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Scripts\Main\Milovana.csx" />
+    <Content Include="Scripts\Main\Milovana.csx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\Tutorial\Example 4a.csx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
