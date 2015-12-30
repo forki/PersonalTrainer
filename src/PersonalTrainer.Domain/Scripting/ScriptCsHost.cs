@@ -1,3 +1,4 @@
+using System;
 using ScriptCs;
 using ScriptCs.Contracts;
 using ScriptCs.Engine.Roslyn;
@@ -10,7 +11,9 @@ namespace Figroll.PersonalTrainer.Domain.Scripting
         private ScriptServices CreateScriptServices()
         {
             var console = new PersonalTrainerConsole();
-            var builder = new ScriptServicesBuilder(console, new DefaultLogProvider());
+            ILogProvider logger = new DefaultLogProvider();
+
+            var builder = new ScriptServicesBuilder(console, logger);
 
             builder.ScriptEngine<RoslynScriptEngine>();
 

@@ -1,0 +1,60 @@
+NUGET
+  remote: https://www.nuget.org/api/v2
+  specs:
+    Autofac (3.3.1) - framework: >= net452
+    Autofac.Mef (3.0.3) - framework: >= net452
+      Autofac (>= 3.3.1 < 4.0.0)
+    Caliburn.Metro (0.5.0) - framework: >= net452
+      Caliburn.Micro (>= 2.0.0)
+      MahApps.Metro (>= 0.13.1.0)
+      MahApps.Metro.Resources (>= 0.2.1.0)
+    Caliburn.Micro (2.0.2) - framework: >= net452
+      Caliburn.Micro.Core (2.0.2)
+    Caliburn.Micro.Core (2.0.2) - framework: >= net452
+    Common.Logging (2.1.2) - framework: >= net452
+    FAKE (4.12.0)
+    MahApps.Metro (1.1.2) - framework: >= net452
+    MahApps.Metro.Resources (0.4.0) - framework: >= net452
+      MahApps.Metro (>= 1.0.0)
+    Microsoft.Web.Xdt (2.1.1) - framework: >= net452
+    Newtonsoft.Json (8.0.1) - framework: >= net452
+    NLog (4.2.3) - framework: >= net452
+    NLog.Config (4.1.2) - framework: >= net452
+      NLog (>= 4.1.2)
+      NLog.Schema (>= 4.0.1)
+    NLog.Schema (4.2.1) - framework: >= net452
+    NuGet.CommandLine (3.3.0)
+    NuGet.Core (2.10.1) - framework: >= net452
+      Microsoft.Web.Xdt (>= 2.1.0)
+    Roslyn.Compilers.Common (1.2.20906.2) - framework: >= net452
+    Roslyn.Compilers.CSharp (1.2.20906.2) - framework: >= net452
+      Roslyn.Compilers.Common (>= 1.2.20906.2)
+    Rx-Core (2.2.5) - framework: >= net46
+      Rx-Interfaces (>= 2.2.5)
+    Rx-Interfaces (2.2.5) - framework: >= net46
+    Rx-Linq (2.2.5) - framework: >= net46
+      Rx-Core (>= 2.2.5)
+      Rx-Interfaces (>= 2.2.5)
+    Rx-Main (2.2.5) - framework: >= net46
+      Rx-Core (>= 2.2.5)
+      Rx-Interfaces (>= 2.2.5)
+      Rx-Linq (>= 2.2.5)
+      Rx-PlatformServices (>= 2.2.5)
+    Rx-PlatformServices (2.2.5) - framework: >= net46
+      Rx-Core (>= 2.2.5)
+      Rx-Interfaces (>= 2.2.5)
+    ScriptCs.Contracts (0.15.0) - framework: >= net452
+    ScriptCs.Core (0.15.0) - framework: >= net452
+      Common.Logging (>= 2.1.2)
+      ScriptCs.Contracts (>= 0.15.0)
+    ScriptCs.Engine.Roslyn (0.15.0) - framework: >= net452
+      Common.Logging (>= 2.1.2)
+      Roslyn.Compilers.CSharp (>= 1.2.20906.2)
+      ScriptCs.Core (>= 0.15.0)
+    ScriptCs.Hosting (0.15.0) - framework: >= net452
+      Autofac.Mef (>= 3.0.3)
+      Common.Logging (>= 2.1.2)
+      Newtonsoft.Json (>= 6.0.3)
+      NuGet.Core (>= 2.8.6)
+      ScriptCs.Core (>= 0.15.0)
+    structuremap (3.1.6.186) - framework: >= net452

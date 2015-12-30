@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Windows;
 
-[assembly: AssemblyTitle("PersonalTrainerScriptPack Trainer")]
+[assembly: AssemblyTitle("PersonalTrainer app")]
 [assembly: AssemblyDescription("An automatic training app.")]
 
 //In order to begin building localizable applications, set 

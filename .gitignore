@@ -131,14 +131,17 @@ publish/
 *.pubxml
 *.publishproj
 
-# NuGet Packages
-*.nupkg
-# The packages folder can be ignored because of Package Restore
-**/packages/*
-# except build/, which is used as an MSBuild target.
-!**/packages/build/
-# If using the old MSBuild-Integrated Package Restore, uncomment this:
-#!**/packages/repositories.config
+# Enable nuget.exe in the .nuget folder (though normally executables are not tracked)
+!.nuget/NuGet.exe
+
+# # NuGet Packages
+# *.nupkg
+# # The packages folder can be ignored because of Package Restore
+# **/packages/*
+# # except build/, which is used as an MSBuild target.
+# !**/packages/build/
+# # If using the old MSBuild-Integrated Package Restore, uncomment this:
+# #!**/packages/repositories.config
 
 # Windows Azure Build Output
 csx/
@@ -229,3 +232,32 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# ===================================================
+# Exclude F# project specific directories and files
+# ===================================================
+
+# NuGet Packages Directory
+packages/
+
+# Generated documentation folder
+docs/output/
+
+# Temp folder used for publishing docs
+temp/
+
+# Test results produced by build
+TestResults.xml
+
+# Nuget outputs
+nuget/*.nupkg
+release.cmd
+release.sh
+localpackages/
+paket-files
+*.orig
+.paket/paket.exe
+docs/content/license.md
+docs/content/release-notes.md
+.fake
+docs/tools/FSharp.Formatting.svclog

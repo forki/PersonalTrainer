@@ -2,5 +2,5 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("AutoTrainer.Domain")]
-[assembly: AssemblyDescription("Domain assembly for the PersonalTrainerScriptPack Trainer app")]
+[assembly: AssemblyTitle("PersonalTrainer.Domain")]
+[assembly: AssemblyDescription("Domain assembly for the PersonalTrainer app")]

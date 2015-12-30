@@ -4,9 +4,9 @@ using Figroll.PersonalTrainer.Domain.Utilities;
 
 namespace Figroll.PersonalTrainer.Domain
 {
-    public class TestBed
+    public class Playground
     {
-        private ITrainingSession _;
+        private readonly ITrainingSession _ = null;
 
         public void Example_1()
         {
