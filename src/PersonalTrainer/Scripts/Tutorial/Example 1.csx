@@ -1,4 +1,8 @@
-﻿// You must always include this in your script.
+﻿// A very simple example showing how to use the Metronome.
+// Note that the first comment in the script file is used as the 
+// decription in the user interface.
+
+// You must always include this in your script.
 var _ = Require<TrainingSession>();
 
 // PERSONAL TRAINER is now initialised and can do a bunch of useful things.

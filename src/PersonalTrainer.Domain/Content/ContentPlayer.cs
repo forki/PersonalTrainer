@@ -14,12 +14,17 @@ namespace Figroll.PersonalTrainer.Domain.Content
     {
         public static readonly Picture BlankPicture = new Picture(string.Empty, string.Empty);
 
+        private readonly IContentCollection _content;
         private readonly ManualResetEvent _slideshowStopped = new ManualResetEvent(false);
-
         private readonly Subject<Picture> _pictureChanged = new Subject<Picture>();
 
         private IEnumerable<Picture> _pictures = Enumerable.Empty<Picture>();
         private IObservable<Unit> _currentPlayback;
+
+        public ContentPlayer(IContentCollection content)
+        {
+            _content = content;
+        }
 
         public void Load(IGallery gallery)
         {
@@ -59,6 +64,16 @@ namespace Figroll.PersonalTrainer.Domain.Content
             });
         }
 
+        public void Display(string picture)
+        {
+            Display(_content.GetPicture(picture));
+        }
+
+        public void Display(string gallery, string picture)
+        {
+            Display(_content.GetPicture(gallery, picture));
+        }
+
         public void Display(Picture picture)
         {
             _pictureChanged.OnNext(picture);
@@ -74,12 +89,6 @@ namespace Figroll.PersonalTrainer.Domain.Content
         {
             Thread.Sleep(pauseThen.ToMilliseconds());
             Display(picture);
-        }
-
-        public void Display(int pauseThen, Picture picture, int thenPause)
-        {
-            Thread.Sleep(thenPause.ToMilliseconds());
-            Display(picture, thenPause);
         }
 
         public void Clear()

@@ -116,7 +116,7 @@ namespace Figroll.PersonalTrainer.ViewModels
         {
             SetSessionState();
 
-            _session = new SessionViewModel(Application.Current.Dispatcher, _trainingSession, _scriptExecutor, _controller.SelectedScript.ScriptFileName);
+            _session = new SessionViewModel(Application.Current.Dispatcher, _trainingSession, _scriptExecutor, _controller.SelectedCollection.SelectedScript.ScriptFileName);
             _session.ScriptCompleted += OnScriptCompleted;
 
             ActivateItem(_session);

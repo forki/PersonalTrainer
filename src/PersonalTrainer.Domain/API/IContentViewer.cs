@@ -16,6 +16,9 @@ namespace Figroll.PersonalTrainer.Domain.API
         IObservable<Picture> WhenPictureChanged { get; }
         void WaitUntilComplete();
 
+        void Display(string picture);
+        void Display(string gallery, string picture);
+
         void Display(Picture picture);
         void Display(Picture picture, int thenPause);
         void Display(int pauseThen, Picture picture);

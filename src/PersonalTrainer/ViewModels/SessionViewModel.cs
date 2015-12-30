@@ -25,7 +25,7 @@ namespace Figroll.PersonalTrainer.ViewModels
 
         private string _imageLocation = string.Empty;
         private string _subtitle;
-        private IDisposable _subscription;
+        private readonly IDisposable _subscription;
 
         public string ImageLocation
         {

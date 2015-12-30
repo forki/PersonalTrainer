@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Caliburn.Micro;
-using Figroll.PersonalTrainer.Domain;
 using Figroll.PersonalTrainer.Domain.API;
 using Figroll.PersonalTrainer.Domain.Scripting;
 using Figroll.PersonalTrainer.Domain.Utilities;
@@ -18,15 +17,13 @@ namespace Figroll.PersonalTrainer.ViewModels
     {
         private readonly Logger _logger = NLog.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType?.ToString());
 
-        //private SessionViewModel _session;
-
         private readonly ITrainingSession _trainingSession;
         private readonly IHostedScriptExecutor _scriptExecutor;
 
         private string _backgroundImage = string.Empty;
 
-        private ScriptViewModel _selectedScript;
-        public ObservableCollection<ScriptViewModel> Scripts { get; private set; }
+        private ScriptCollectionViewModel _selectedCollection;
+        public ObservableCollection<ScriptCollectionViewModel> ScriptCollections { get; private set; }
 
         public string BackgroundImage
         {
@@ -38,13 +35,13 @@ namespace Figroll.PersonalTrainer.ViewModels
             }
         }
 
-        public ScriptViewModel SelectedScript
+        public ScriptCollectionViewModel SelectedCollection
         {
-            get { return _selectedScript; }
+            get { return _selectedCollection; }
             set
             {
-                _selectedScript = value;
-                NotifyOfPropertyChange(() => SelectedScript);
+                _selectedCollection = value;
+                NotifyOfPropertyChange(() => SelectedCollection);
             }
         }
 
@@ -56,27 +53,24 @@ namespace Figroll.PersonalTrainer.ViewModels
             BackgroundImage = @"../Resources/autotrainer.jpg";
 
             LoadScripts();
-            SelectedScript = Scripts.FirstOrDefault();
+            SelectedCollection = ScriptCollections.FirstOrDefault();
         }
 
 
         private void LoadScripts()
         {
-            var scriptDirectory = string.Empty;
-            Scripts = new ObservableCollection<ScriptViewModel>();
+            var scriptDirectory = @"./Scripts";
+            ScriptCollections = new ObservableCollection<ScriptCollectionViewModel>();
 
             try
             {
-                scriptDirectory = @"./Scripts";
-
-                var files = Directory.GetFiles(scriptDirectory, "*.csx");
-                files.ForEach(f => Scripts.Add(new ScriptViewModel(Path.GetFileNameWithoutExtension(f), f)));
+                var directories = Directory.GetDirectories(scriptDirectory);
+                directories.ForEach(f => ScriptCollections.Add(new ScriptCollectionViewModel(Path.GetFileNameWithoutExtension(f), f)));
             }
             catch (Exception e)
             {
                 _logger.Fatal(e, "Exception thrown reading " + scriptDirectory);
             }
         }
-
    }
 }

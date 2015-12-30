@@ -26,5 +26,3 @@ _.Viewer.Clear();
 _.Trainer.Say("Well done.", 1);
 
 // Next up in Example 5 we will look at random numbers.
-
-

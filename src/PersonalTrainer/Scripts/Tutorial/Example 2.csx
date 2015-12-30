@@ -1,6 +1,7 @@
-﻿var _ = Require<TrainingSession>();
+﻿// How to use the Metronome in "continuous play" mode.
+var _ = Require<TrainingSession>();
 
-// We can also just start the Metronome playing.
+// We can also just start the Metronome playing in "continuous play" mode.
 _.Metronome.BPM = 60;
 _.Metronome.Start();
 
@@ -9,7 +10,6 @@ _.Metronome.Start();
 
 // In this case we will use the Timer to wait 10 seconds and then stop the Metronome.
 _.Timer.Wait(10);
-
 _.Metronome.Stop();
 
 // On to Example 3!

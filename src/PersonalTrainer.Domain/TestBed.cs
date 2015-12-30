@@ -36,37 +36,23 @@ namespace Figroll.PersonalTrainer.Domain
 
         public void Example_3()
         {
-            _.Content.Load("Collection");
+            _.Content.Load(@"D:\Milovana\OT London");
 
             var shuffledGalleries = _.Content.Galleries.Shuffle();
 
-            foreach (var gallery in shuffledGalleries)
+            int n = 0;
+            foreach (var picture in shuffledGalleries.SelectMany(gallery => gallery.Pictures))
             {
-                _.Viewer.PlaySlideshow(gallery.Pictures.Shuffle(), 1);
+                _.Viewer.Display(picture, 1);
+                _.Metronome.Play(10, 120);
+                _.Trainer.Say("Next picture.");
+
+                if (n++ == 10)
+                {
+                    _.Trainer.Say("Rest now.");
+                    _.Timer.Wait(_.RNG.Between(5, 15));
+                }
             }
-
-            _.Content.Galleries.ForEach(g =>
-            {
-                _.Viewer.PlaySlideshow(g, 1);
-            });
-
-            var picture = _.Content.GetPicture("blue socks");
-
-            int bpm = 60;
-            int beats = 10;
-
-            for (int i = 0; i < 3; i++)
-            {
-                _.Viewer.Display(picture);
-
-                //StrokePlease(bpm, beats);
-
-                // We can clear the screen like this:
-                _.Viewer.Clear();
-
-                // And give the player a short 3 second rest like this:
-                _.Timer.Wait(3);
-            }
-        }
+       }
     }
 }

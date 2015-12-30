@@ -10,7 +10,7 @@ _.Metronome.Start();
 
 var shuffledGalleries = _.Content.Galleries.Shuffle();
 
-// ShuffledGaleries is now our three loaded galleries in a random order.
+// shuffledGalleries is now our three loaded galleries in a random order.
 // Note that _.Content.Galleries is still in the original order.
 
 foreach (var gallery in shuffledGalleries)
@@ -22,11 +22,8 @@ foreach (var gallery in shuffledGalleries)
     _.Viewer.PlaySlideshow(shuffledPictures, 1);
 
     _.Viewer.WaitUntilComplete();
+    }
+
+    _.Metronome.Stop();
+    _.Trainer.Say("Well done.");
 }
-
-_.Metronome.Stop();
-_.Trainer.Say("Well done.");
-
-
-
-

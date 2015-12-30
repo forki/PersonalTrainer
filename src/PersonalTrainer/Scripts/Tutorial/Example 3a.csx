@@ -1,4 +1,5 @@
-﻿var _ = Require<TrainingSession>();
+﻿// Using the C# programming language to improve our scripts.
+var _ = Require<TrainingSession>();
 
 // Since these scripts are C# we can write functions.  So let's make our stroking request 
 // into a function like so:
@@ -14,8 +15,8 @@ _.Content.Load("Pictures");
 // Indeed we can do (almost) anything here we can do in C# only as a script with a text editor
 // instead of a development environment and compiler.
 // So lets make a loop and have the player do an increasing number of strokes at an increasing 
-// pace each time around the loop.  Still only one picture but we will get to multiple pictures
-// very soon.
+// pace each time around the loop.  
+// Still only one picture but we will get to multiple pictures very soon.
 
 // Let's start at 10 strokes at 60bpm.
 int bpm = 60;
@@ -36,9 +37,8 @@ for (int i = 0; i < 3; i++)
     //      _.Viewer.Display(picture);
     //      _.Timer.Wait(1);
 
-    // The picture has been displayed, we have paused for one second so the player can 
-    // take it in, lets call our function and get them to do count strokes at a speed 
-    // of bpm.
+    // The picture has been displayed, we have paused for one second so the player can take 
+    // it in, let's now call our function and get them to do count strokes at a speed  of bpm
     StrokePlease(count, bpm);
 
     // We can clear the screen by calling Viewer.Clear()

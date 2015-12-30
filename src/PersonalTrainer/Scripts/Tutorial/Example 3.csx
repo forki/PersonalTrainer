@@ -1,4 +1,5 @@
-﻿var _ = Require<TrainingSession>();
+﻿// Loading content and displaying a picture.
+var _ = Require<TrainingSession>();
 
 // Beats are all very well but what about something to look at?
 // As well as a Metronome, your PERSONAL TRAINER can also display Content.
@@ -16,15 +17,15 @@ _.Content.Load("Pictures");
 var picture = _.Content.GetPicture("blue socks.jpg");
 _.Viewer.Display(picture);
 
+// Or in one line like this:
+// _.Viewer.Display("blue socks.jpg");
+
 // The picture is now on the screen and our script continues.
-// Lets play 10 beats at 120 again.
+// Let's play 10 beats at 120 again.
 _.Metronome.BPM = 120;
 _.Metronome.Play(10);
 
 // And wait until the beats are done.
 _.Metronome.WaitUntilPlayStops();
 
-// In example 3a we are going to do the same as this example but add some programmiong refinements.
-
-
-
+// In example 3a we are going to do the same as this example but add some programming refinements.

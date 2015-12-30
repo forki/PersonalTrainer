@@ -16,11 +16,8 @@ foreach (var gallery in _.Content.Galleries)
     // constant 120 bpm. Again becuase the slideshow is playing in the background we
     // need to wait until it's finished before moving on to the next gallery.
     _.Viewer.WaitUntilComplete();
+    }
+
+    _.Metronome.Stop();
+    _.Trainer.Say("Well done.");
 }
-
-_.Metronome.Stop();
-_.Trainer.Say("Well done.");
-
-
-
-

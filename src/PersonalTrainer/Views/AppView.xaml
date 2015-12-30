@@ -7,7 +7,8 @@
              mc:Ignorable="d"
              d:DesignHeight="500" d:DesignWidth="800">
     <UserControl.Resources>
-        <converters:BoolVisibilityConverter x:Key="CollapsedIfTrue" IsTrue="Collapsed" IsFalse="Visible" />
+        <converters:NullOrEmptyVisibilityConverter x:Key="CollapsedIfMissing" IsEmpty="Collapsed" IsNull="Collapsed" IsNotNull="Visible" />
+        <converters:BoolVisibilityConverter x:Key="CollapsedIfTrue" IsFalse="Visible" IsTrue="Collapsed" />
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -15,10 +16,8 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-
         <ContentControl Grid.Row="0"  x:Name="ActiveItem" />
-
-        <TextBlock Grid.Row="1" Background="Transparent" Foreground="LawnGreen" Text="{Binding ErrorText}" Visibility="{Binding Path=IsSessionActive, Converter={StaticResource CollapsedIfTrue}}"/>
+        <TextBlock Grid.Row="1" Background="Transparent" Foreground="LawnGreen" Text="{Binding ErrorText}" Visibility="{Binding Path=ErrorText, Converter={StaticResource CollapsedIfMissing}}"/>
         <Button Grid.Row="2" Name="UserAction" IsDefault="True" Content="START!" Visibility="{Binding Path=IsSessionActive, Converter={StaticResource CollapsedIfTrue}}"/>
     </Grid>
 </UserControl>
