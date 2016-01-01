@@ -19,6 +19,7 @@ Target "SetVersions" (fun _ ->
          Attribute.Version version
          Attribute.FileVersion version
          Attribute.Trademark commitHash
+         Attribute.Metadata("githash", commitHash)
          Attribute.ComVisible false]
 )
 

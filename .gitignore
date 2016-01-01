@@ -7,6 +7,11 @@
 *.userosscache
 *.sln.docstates
 
+# Xamarin Studio / monodevelop user-specific
+*.userprefs
+*.dll.mdb
+*.exe.mdb
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
@@ -25,15 +30,6 @@ bld/
 # MSTest test Results
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
-
-#NUNIT
-*.VisualState.xml
-TestResult.xml
-
-# Build Results of an ATL Project
-[Dd]ebugPS/
-[Rr]eleasePS/
-dlldata.c
 
 *_i.c
 *_p.c
@@ -134,14 +130,14 @@ publish/
 # Enable nuget.exe in the .nuget folder (though normally executables are not tracked)
 !.nuget/NuGet.exe
 
-# # NuGet Packages
-# *.nupkg
-# # The packages folder can be ignored because of Package Restore
-# **/packages/*
-# # except build/, which is used as an MSBuild target.
-# !**/packages/build/
-# # If using the old MSBuild-Integrated Package Restore, uncomment this:
-# #!**/packages/repositories.config
+# NuGet Packages
+*.nupkg
+# The packages folder can be ignored because of Package Restore
+**/packages/*
+# except build/, which is used as an MSBuild target.
+!**/packages/build/
+# If using the old MSBuild-Integrated Package Restore, uncomment this:
+#!**/packages/repositories.config
 
 # Windows Azure Build Output
 csx/
@@ -233,9 +229,9 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# ===================================================
-# Exclude F# project specific directories and files
-# ===================================================
+# ===========================================
+# Exclude FAKE specific directories and files
+# ===========================================
 
 # NuGet Packages Directory
 packages/
@@ -261,3 +257,6 @@ docs/content/license.md
 docs/content/release-notes.md
 .fake
 docs/tools/FSharp.Formatting.svclog
+
+# Generated shared assembly info file
+src/CommonAssemblyInfo.cs
