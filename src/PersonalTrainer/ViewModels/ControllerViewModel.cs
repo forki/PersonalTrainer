@@ -59,7 +59,8 @@ namespace Figroll.PersonalTrainer.ViewModels
 
         private void LoadScripts()
         {
-            var scriptDirectory = @"./Scripts";
+            // todo put this in settings
+            var scriptDirectory = @"./content";
             ScriptCollections = new ObservableCollection<ScriptCollectionViewModel>();
 
             try

@@ -64,6 +64,5 @@ namespace Figroll.PersonalTrainer
         {
             _container.BuildUp(instance);
         }
-
     }
 }

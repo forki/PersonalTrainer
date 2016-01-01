@@ -22,7 +22,7 @@ namespace Figroll.PersonalTrainer
             _logger.Fatal("UI thread exception was unhandled and applicaton will close");
             HandleFatalException(e.Exception);
 
-            MessageBox.Show("Your PersonalTrainerScriptPack Trainer session has been busted by the Feds on suspicion of perfomance enhancing drugs :-(" +
+            MessageBox.Show("Your PERSONAL TRAINER session has been busted by the Feds on suspicion of perfomance enhancing drugs :-(" +
                             Environment.NewLine + "The inditement says " + e.Exception.Message, "Fatal Error");
 
             e.Handled = false;

@@ -2,10 +2,14 @@
 open Fake
 open Fake.AssemblyInfoFile
 open Fake.Git
+open Fake.FileHelper
 
 let version = "0.9.0"
 
 let buildDir = "./build/"
+let contentSourceDir = "./content/"
+let contentTargetDir = "./build/content/"
+
 let commitHash = Information.getCurrentSHA1 ".git"
 
 Target "Clean" (fun _ ->
@@ -19,7 +23,6 @@ Target "SetVersions" (fun _ ->
          Attribute.Version version
          Attribute.FileVersion version
          Attribute.Trademark commitHash
-         Attribute.Metadata("githash", commitHash)
          Attribute.ComVisible false]
 )
 
@@ -29,8 +32,21 @@ Target "BuildApp" (fun _ ->
       |> Log "BuildApp-Output: "
 )
 
+Target "PackageContent" (fun _ ->
+    CleanDir contentTargetDir
+    CopyRecursive contentSourceDir contentTargetDir true |> Log "Copying content: "
+)
+
+Target "Release" (fun _ ->
+    trace "App built and packaged for release"
+)
+
 "Clean"
   ==> "SetVersions"
   ==> "BuildApp"
+
+"BuildApp"
+  ==> "PackageContent"
+  ==> "Release"
 
 RunTargetOrDefault "BuildApp"

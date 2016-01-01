@@ -260,3 +260,6 @@ docs/tools/FSharp.Formatting.svclog
 
 # Generated shared assembly info file
 src/CommonAssemblyInfo.cs
+
+# Don't commit default content to the repo
+content/
