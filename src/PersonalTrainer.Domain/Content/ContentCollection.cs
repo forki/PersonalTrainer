@@ -26,6 +26,7 @@ namespace Figroll.PersonalTrainer.Domain.Content
         {
             _logger.Trace("Loading media dir={0}; ext={1}", mediaDirectory, extensions);
 
+            var fp = Path.GetFullPath(mediaDirectory);
             _mediaBaseDirectory = Directory.GetParent(Path.GetFullPath(mediaDirectory)).FullName;
 
             _content.Clear();
@@ -42,14 +43,12 @@ namespace Figroll.PersonalTrainer.Domain.Content
                 var files = Directory.GetFiles(mediaDirectory);
                 var galleryName = Path.GetFileNameWithoutExtension(mediaDirectory);
 
-                Debug.Assert(galleryName != null, "galleryName != null");
-
                 var pictures = (from file in files
                     let ext = Path.GetExtension(file)
                     where ext != null && extensions.Contains(ext.ToLower())
                     let name = Path.GetFileName(file)
-                    let filename = Path.Combine(_mediaBaseDirectory, file)
-                    select new Picture(name, filename)).ToList();
+                    let fullPath = Path.GetFullPath(file)
+                    select new Picture(name, fullPath)).ToList();
 
                 if (pictures.Count > 0)
                 {
