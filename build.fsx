@@ -33,7 +33,6 @@ Target "BuildApp" (fun _ ->
 )
 
 Target "PackageContent" (fun _ ->
-    CleanDir contentTargetDir
     CopyRecursive contentSourceDir contentTargetDir true |> Log "Copying content: "
 )
 
@@ -45,8 +44,8 @@ Target "Release" (fun _ ->
   ==> "SetVersions"
   ==> "BuildApp"
 
-"BuildApp"
-  ==> "PackageContent"
+"PackageContent"
+  ==> "BuildApp"
   ==> "Release"
 
 RunTargetOrDefault "BuildApp"

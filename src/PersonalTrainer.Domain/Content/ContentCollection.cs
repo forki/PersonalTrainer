@@ -43,12 +43,17 @@ namespace Figroll.PersonalTrainer.Domain.Content
                 var files = Directory.GetFiles(mediaDirectory);
                 var galleryName = Path.GetFileNameWithoutExtension(mediaDirectory);
 
-                var pictures = (from file in files
-                    let ext = Path.GetExtension(file)
-                    where ext != null && extensions.Contains(ext.ToLower())
-                    let name = Path.GetFileName(file)
-                    let fullPath = Path.GetFullPath(file)
-                    select new Picture(name, fullPath)).ToList();
+                var pictures = new List<Picture>();
+                foreach (var file in files)
+                {
+                    string ext = Path.GetExtension(file);
+                    if (ext != null && extensions.Contains(ext.ToLower()))
+                    {
+                        string name = Path.GetFileName(file);
+                        string fullPath = Path.GetFullPath(file);
+                        pictures.Add(new Picture(name, fullPath));
+                    }
+                }
 
                 if (pictures.Count > 0)
                 {
