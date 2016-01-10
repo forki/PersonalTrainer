@@ -35,6 +35,7 @@ namespace Figroll.PersonalTrainer
                 x.For<ITrainingSession>().Singleton().Use<TrainingSession>();
                 x.Forward<ITrainingSession, IScriptPackContext>();
 
+                x.For<IUserSettings>().Singleton().Use<UserSettings>();
                 x.For<ITrainer>().Use<Trainer>();
                 x.For<ITimer>().Use<SessionTimer>();
                 x.For<IRandomNumberGenerator>().Use<RandomNumberGenerator>();

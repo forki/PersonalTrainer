@@ -1,6 +1,5 @@
 using System;
 using Figroll.PersonalTrainer.Domain.API;
-using Figroll.PersonalTrainer.Domain.Content;
 
 namespace Figroll.PersonalTrainer.Domain.Utilities
 {
@@ -30,7 +29,20 @@ namespace Figroll.PersonalTrainer.Domain.Utilities
 
         public int Between(int min, int max)
         {
-            return RNG.Next(min, max);
+            // Next is upper bound exclusive so make it inclusive
+            // which is more intuitive for non-programmers.
+            if (min == 0 || min == 1)
+                return RNG.Next(min, max + min);
+
+            return RNG.Next(min - 1, max);
+        }
+
+        public int Between(int min, int max, int step)
+        {
+            var minSteps = min/step;
+            var maxSteps = max/step;
+
+            return Between(minSteps, maxSteps) * step;
         }
     }
 }

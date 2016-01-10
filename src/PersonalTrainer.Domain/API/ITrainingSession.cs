@@ -8,6 +8,7 @@ namespace Figroll.PersonalTrainer.Domain.API
     /// </summary>
     public interface ITrainingSession: IScriptPackContext, IDisposable
     {
+        IUserSettings Settings { get; }
         ITrainer Trainer { get; }
         IRandomNumberGenerator RNG { get; }
         ITimer Timer { get; }

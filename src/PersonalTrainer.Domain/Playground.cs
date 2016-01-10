@@ -4,39 +4,43 @@ using Figroll.PersonalTrainer.Domain.Utilities;
 
 namespace Figroll.PersonalTrainer.Domain
 {
+    /// <summary>
+    /// This class just exists for hacking about with bits of script.
+    /// </summary>
     public class Playground
     {
         private readonly ITrainingSession _ = null;
 
+        public Playground(ITrainingSession x)
+        {
+            _ = x;
+        }
+
         public void Example_1()
         {
-            _.Content.Load("Collection");
+            var yes = 0;
+            var no = 0;
 
-            var gallery = _.Content.Gallery("Petra V");
-            _.Viewer.PlaySlideshow(gallery, 4);
-
-            _.Metronome.BPM = 60;
-            _.Metronome.Start();
+            for (int i = 1000 - 1; i >= 0; i--)
+            {
+                if (_.RNG.IsPercentageChance(90))
+                {
+                    yes++;
+                }
+                else
+                {
+                    no++;
+                }
+            }
         }
 
         public void Example_2()
         {
-            _.Content.Load("Collection");
-            _.Trainer.UseVoice("Amy");
-
-            var picture = _.Content.Pictures.First();
-            _.Viewer.Display(picture);
-
-            picture = _.Content.Pictures.Single(p => p.Name == "Blue Socks.jpg");
-            _.Viewer.Display(picture);
-
-            _.Metronome.WaitUntilPlayStops();
-            _.Timer.Wait(3);
         }
 
         public void Example_3()
         {
-            _.Content.Load(@"D:\Milovana\OT London");
+            _.Content.Load(@"D:\Milovana\");
 
             var shuffledGalleries = _.Content.Galleries.Shuffle();
 

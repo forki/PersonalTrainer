@@ -53,7 +53,13 @@ namespace Figroll.PersonalTrainer.ViewModels
 
             try
             {
-                File.ReadAllLines(scriptFileName).TakeWhile(line => line.StartsWith("//")).ForEach(x => { _scriptDescription += x.Remove(0, 2).Trim() + Environment.NewLine; });
+                File.ReadAllLines(scriptFileName)
+                    .SkipWhile(line => line.StartsWith("#load") || string.IsNullOrWhiteSpace(line))
+                    .TakeWhile(line => line.StartsWith("//"))
+                    .ForEach(x =>
+                        {
+                            _scriptDescription += x.Remove(0, 2).Trim() + Environment.NewLine;
+                        });
 
                 if (!string.IsNullOrEmpty(_scriptDescription))
                 {

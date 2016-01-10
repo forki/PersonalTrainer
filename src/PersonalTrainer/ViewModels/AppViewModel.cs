@@ -77,6 +77,9 @@ namespace Figroll.PersonalTrainer.ViewModels
 
             _controller = new ControllerViewModel(trainingSession, scriptExecutor);
             SetControlPanelState();
+
+            var x = new Playground(trainingSession);
+            x.Example_1();
         }
 
         protected override void OnViewReady(object view)

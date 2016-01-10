@@ -23,7 +23,7 @@ namespace Figroll.PersonalTrainer.Domain.API
         void Display(Picture picture, int thenPause);
         void Display(int pauseThen, Picture picture);
 
-        // Should be a DisplayNext()
+        // There should be a DisplayNext()?
 
         void Clear();
         void Clear(int thenPause);
