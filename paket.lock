@@ -58,3 +58,4 @@ NUGET
       NuGet.Core (>= 2.8.6)
       ScriptCs.Core (>= 0.15.0)
     structuremap (3.1.6.186) - framework: >= net452
+    YamlDotNet (3.7.0)

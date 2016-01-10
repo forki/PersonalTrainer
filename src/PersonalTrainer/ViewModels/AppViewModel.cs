@@ -30,7 +30,7 @@ namespace Figroll.PersonalTrainer.ViewModels
 
         private readonly Logger _logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType?.ToString());
 
-        private string _displayName = "PERSONAL TRAINER";
+        private string _displayName = Constants.PersonalTrainerTitle;
         private string _errorText;
 
         private AutoTrainerModes _autoTrainerMode;

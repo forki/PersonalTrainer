@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Xml;
 using Caliburn.Metro;
 using Caliburn.Micro;
 using Figroll.PersonalTrainer.Domain;
@@ -20,6 +22,7 @@ namespace Figroll.PersonalTrainer
     public class AppBootstrapper : CaliburnMetroCompositionBootstrapper<AppViewModel>
     {
         private IContainer _container;
+        private UserSettings _userSettings;
 
         public AppBootstrapper()
         {
@@ -28,6 +31,8 @@ namespace Figroll.PersonalTrainer
 
         protected override void Configure()
         {
+            LoadUserSettings();
+
             _container = new Container(x =>
             {
                 x.For<IWindowManager>().Singleton().Use<AppWindowManager>();
@@ -35,7 +40,7 @@ namespace Figroll.PersonalTrainer
                 x.For<ITrainingSession>().Singleton().Use<TrainingSession>();
                 x.Forward<ITrainingSession, IScriptPackContext>();
 
-                x.For<IUserSettings>().Singleton().Use<UserSettings>();
+                x.For<IUserSettings>().Singleton().Use(_userSettings);
                 x.For<ITrainer>().Use<Trainer>();
                 x.For<ITimer>().Use<SessionTimer>();
                 x.For<IRandomNumberGenerator>().Use<RandomNumberGenerator>();
@@ -47,6 +52,12 @@ namespace Figroll.PersonalTrainer
                 x.For<IScriptPack>().Singleton().Use<PersonalTrainerScriptPack>();
                 x.For<IHostedScriptExecutor>().Use<HostedScriptExecutor>();
             });
+        }
+
+        private void LoadUserSettings()
+        {
+            var simpleYamlSerialiser = new SimpleYamlSerialiser<UserSettings>();
+            _userSettings = simpleYamlSerialiser.Load(Constants.SettingsFileName);
         }
 
         protected override object GetInstance(Type serviceType, string key)

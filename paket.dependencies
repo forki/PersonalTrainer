@@ -21,3 +21,4 @@ nuget structuremap 3.1.6.186 framework: >= net452
 nuget Common.Logging 2.1.2 framework: >= net452
 nuget AutoFac.Mef 3.0.3 framework: >= net452
 nuget AutoFac 3.3.1 framework: >= net452
+nuget YamlDotNet

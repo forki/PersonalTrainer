@@ -4,3 +4,4 @@ NuGet.CommandLine
 Rx-Main
 ScriptCs.Contracts
 structuremap
+YamlDotNet

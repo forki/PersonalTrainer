@@ -1,0 +1,3 @@
+UseTTS: true
+DefaultVoice: Amy
+ContentLocation: d:\milovana\content
