@@ -44,6 +44,10 @@ namespace Figroll.PersonalTrainer.Domain
 
             var shuffledGalleries = _.Content.Galleries.Shuffle();
 
+            var test = shuffledGalleries.First().Pictures;
+            int step = test.Count() / 10;
+            var selection = test.Where((x, i) => i%step == 0);
+
             int n = 0;
             foreach (var picture in shuffledGalleries.SelectMany(gallery => gallery.Pictures))
             {
