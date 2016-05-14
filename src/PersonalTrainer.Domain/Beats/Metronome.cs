@@ -14,10 +14,11 @@ namespace Figroll.PersonalTrainer.Domain.Beats
         private const int ContinuousPlay = Int32.MaxValue;
         private const int DefaultSpeed = 120;
         private const int MinBPM = 1;
-        private const int MaxBPM = 300;
+        private const int MaxBPM = 360;
+
+        private readonly ManualResetEvent _playStopped = new ManualResetEvent(false);
 
         private const string SoundFile = "53403__calaudio__wood-block.wav";
-        private readonly ManualResetEvent _playStopped = new ManualResetEvent(false);
         private readonly SoundPlayer _soundPlayer = new SoundPlayer(SoundFile);
 
         // Roslyn and therefore scriptcs do not support async/await so have to use Timer.
@@ -43,7 +44,10 @@ namespace Figroll.PersonalTrainer.Domain.Beats
                 else if (value <= MinBPM)
                     _bpm = MinBPM;
                 else
+                {
+                    _logger.Debug($"Metronome BPM was {_bpm} now {value}");
                     _bpm = value;
+                }
             }
         }
 
@@ -57,6 +61,8 @@ namespace Figroll.PersonalTrainer.Domain.Beats
 
                 _count = value;
                 _remaining = _count;
+
+                _logger.Debug($"Metronome count set to {_count}");
             }
         }
 
@@ -84,11 +90,13 @@ namespace Figroll.PersonalTrainer.Domain.Beats
 
         public void Play(int count, int bpm)
         {
+            _logger.Debug($"Metronome play {count} beats at {_bpm}");
             _playStopped.Reset();
 
             BPM = bpm;
             Count = count;
 
+            PlayBeat(true);
             DoPlay();
         }
 
@@ -105,6 +113,7 @@ namespace Figroll.PersonalTrainer.Domain.Beats
 
         protected void PlayBeat(bool isBarEnd)
         {
+            _logger.Trace($"Playing beat bar end = {isBarEnd}");
             _soundPlayer.Play();
 
             OnMetronomeTicked(IsContinuousPlay()
@@ -119,9 +128,9 @@ namespace Figroll.PersonalTrainer.Domain.Beats
 
         protected void EndBar()
         {
-            _remaining--;
+            if (IsContinuousPlay()) return;
 
-            if (_remaining <= 0 && !IsContinuousPlay())
+            if (_remaining-- <= 1)
             {
                 Stop();
             }
@@ -129,16 +138,19 @@ namespace Figroll.PersonalTrainer.Domain.Beats
 
         public void Start()
         {
+            _logger.Debug($"Continuous play started at speed {BPM}");
             Play(ContinuousPlay, BPM);
         }
 
         public void WaitUntilPlayStops()
         {
+            _logger.Debug($"Waiting until metronome stops.");
             _playStopped.WaitOne();
         }
 
         public void Stop()
         {
+            _logger.Debug($"Metronome stopped.");
             BeatTimer.Change(Timeout.Infinite, Timeout.Infinite);
             _playStopped.Set();
         }

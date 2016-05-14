@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -9,11 +8,11 @@ using NLog;
 
 namespace Figroll.PersonalTrainer.Domain.Content
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class ContentCollection : IContentCollection
     {
         private readonly Logger _logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType?.ToString());
 
-        private string _mediaBaseDirectory;
         private readonly Dictionary<string, Gallery> _content = new Dictionary<string, Gallery>();
         private IEnumerable<Picture> _allPictures;
 
@@ -24,10 +23,7 @@ namespace Figroll.PersonalTrainer.Domain.Content
 
         public void Load(string mediaDirectory, string[] extensions)
         {
-            _logger.Trace("Loading media dir={0}; ext={1}", mediaDirectory, extensions);
-
-            var fp = Path.GetFullPath(mediaDirectory);
-            _mediaBaseDirectory = Directory.GetParent(Path.GetFullPath(mediaDirectory)).FullName;
+            _logger.Trace($"Loading media dir={mediaDirectory}; ext={extensions}");
 
             _content.Clear();
             LoadMedia(mediaDirectory, extensions);
@@ -47,12 +43,11 @@ namespace Figroll.PersonalTrainer.Domain.Content
                 foreach (var file in files)
                 {
                     string ext = Path.GetExtension(file);
-                    if (ext != null && extensions.Contains(ext.ToLower()))
-                    {
-                        string name = Path.GetFileName(file);
-                        string fullPath = Path.GetFullPath(file);
-                        pictures.Add(new Picture(name, fullPath));
-                    }
+                    if (ext == null || !extensions.Contains(ext.ToLower())) continue;
+
+                    string name = Path.GetFileName(file);
+                    string fullPath = Path.GetFullPath(file);
+                    pictures.Add(new Picture(name, fullPath));
                 }
 
                 if (pictures.Count > 0)
@@ -67,7 +62,7 @@ namespace Figroll.PersonalTrainer.Domain.Content
             }
             catch (Exception e)
             {
-                _logger.Fatal(e, "Exception thrown reading " + mediaDirectory);
+                _logger.Fatal(e, $"Exception thrown reading {mediaDirectory}");
             }
         }
 
@@ -77,12 +72,12 @@ namespace Figroll.PersonalTrainer.Domain.Content
 
         public Picture GetPicture(string name)
         {
-            return _allPictures.SingleOrDefault(p => p.Name == name) ?? ContentPlayer.BlankPicture;
+            return _allPictures.SingleOrDefault(p => p.Filename == name) ?? ContentPlayer.BlankPicture;
         }
 
         public Picture GetPicture(string gallery, string name)
         {
-            throw new NotImplementedException();
+            return Gallery(gallery).Pictures.SingleOrDefault(p => p.Filename == name) ?? ContentPlayer.BlankPicture;
         }
 
         public IGallery Gallery(string name)

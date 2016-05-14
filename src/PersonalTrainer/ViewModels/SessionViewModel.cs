@@ -25,7 +25,7 @@ namespace Figroll.PersonalTrainer.ViewModels
 
         private string _imageLocation = string.Empty;
         private string _subtitle;
-        private readonly IDisposable _subscription;
+        //private readonly IDisposable _subscription;
 
         public string ImageLocation
         {
@@ -54,14 +54,14 @@ namespace Figroll.PersonalTrainer.ViewModels
             _trainingSession = trainingSession;
             _scriptExecutor = scriptExecutor;
             _scriptFile = scriptFile;
-            _trainingSession.Trainer.Spoke += TrainerOnSpoke;
 
-            _subscription = _trainingSession.Viewer.WhenPictureChanged.Subscribe(this.OnPictureChanged);
+            _trainingSession.Trainer.Spoke += TrainerOnSpoke;
+            _trainingSession.Viewer.PictureChanged += ViewerOnPictureChanged;
         }
 
-        private void OnPictureChanged(Picture picture)
+        private void ViewerOnPictureChanged(object sender, PictureEventArgs eventArgs)
         {
-            _dispatcher.BeginInvoke(new Action(() => { ImageLocation = picture.Filename; }));
+            _dispatcher.BeginInvoke(new Action(() => { ImageLocation = eventArgs.Picture.Fullpath; }));
         }
 
         protected override void OnViewLoaded(object view)
@@ -79,9 +79,10 @@ namespace Figroll.PersonalTrainer.ViewModels
         private void OnScriptCompleted()
         {
             _trainingSession.Trainer.Spoke -= TrainerOnSpoke;
+            _trainingSession.Viewer.PictureChanged -= ViewerOnPictureChanged;
+
             ScriptCompleted?.Invoke(this, new ScriptResultEventArgs(_scriptExecutor.Result));
 
-            _subscription.Dispose();
             _trainingSession.Dispose();
         }
     }

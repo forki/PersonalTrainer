@@ -5,7 +5,6 @@ namespace Figroll.PersonalTrainer.Domain.Beats
 {
     public class Sequencer : Metronome, ISequencer
     {
-        private readonly List<int> _validBeatCounts = new List<int> {'1', '2', '3', '4'};
         private int _beatPosition;
         private readonly Dictionary<int, bool> _pattern = new Dictionary<int, bool>();
 
@@ -14,7 +13,7 @@ namespace Figroll.PersonalTrainer.Domain.Beats
             // "1+3+"
             // "1234"
             // "+3+"
-            // 1+2+3+4+
+            // "1+2+3+4+"
             _pattern.Clear();
             _pattern.Add(1, false);
             _pattern.Add(2, false);
@@ -46,11 +45,11 @@ namespace Figroll.PersonalTrainer.Domain.Beats
             {
                 _pattern[2] = true;
             }
-            if (pattern.Contains("2+"))
+            if (pattern.Contains("2+") || pattern.Contains("+3"))
             {
                 _pattern[4] = true;
             }
-            if (pattern.Contains("3+"))
+            if (pattern.Contains("3+") || pattern.Contains("+4"))
             {
                 _pattern[6] = true;
             }
@@ -63,8 +62,8 @@ namespace Figroll.PersonalTrainer.Domain.Beats
         protected override void DoPlay()
         {
             _beatPosition = 0;
-            var milliseconds = (int)(1000.0 / (BPM * 2 / 60.0));
-            BeatTimer.Change(milliseconds, milliseconds);
+            var millisecondsPerBeat = (int)(1000.0 / (BPM * 2 / 60.0));
+            BeatTimer.Change(millisecondsPerBeat, millisecondsPerBeat);
         }
 
         protected override void OnTick(object state)

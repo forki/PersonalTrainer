@@ -62,7 +62,7 @@
     <Compile Include="Content\Gallery.cs" />
     <Compile Include="Content\Picture.cs" />
     <Compile Include="Content\PictureInfo.cs" />
-    <Compile Include="Content\PictureRequestedEventArgs.cs" />
+    <Compile Include="Content\PictureEventArgs.cs" />
     <Compile Include="Beats\Metronome.cs" />
     <Compile Include="Beats\MetronomeEventArgs.cs" />
     <Compile Include="Beats\Sequencer.cs" />
@@ -82,6 +82,7 @@
     <Compile Include="Utilities\RandomNumberGenerator.cs" />
     <Compile Include="Utilities\RandomProvider.cs" />
     <Compile Include="Voice\SpokeEventArgs.cs" />
+    <Compile Include="Voice\Taunter.cs" />
     <Compile Include="Voice\Trainer.cs" />
   </ItemGroup>
   <ItemGroup>

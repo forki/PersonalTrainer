@@ -12,21 +12,21 @@ using NLog;
 
 namespace Figroll.PersonalTrainer.Domain.Voice
 {
-    // ReSharper disable once ClassNeverInstantiated.Global
-    public sealed class Trainer : ITrainer
+    public class Voice : IVoice
     {
+        private readonly Logger _logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType?.ToString());
+
         private const int TrainerSpeechEndPause = 500;
         private const int MilisecondsPerWord = 400;
 
-        private readonly Logger _logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType?.ToString());
-        private readonly SpeechSynthesizer _speaker = new SpeechSynthesizer();
         private ReadOnlyCollection<InstalledVoice> _installedVoices;
-        private bool _voiceSelected;
+        protected readonly SpeechSynthesizer Speaker = new SpeechSynthesizer();
+        protected bool VoiceSelected;
 
         public void VoiceOff()
         {
             _logger.Trace("TTS disabled.");
-            _voiceSelected = false;
+            VoiceSelected = false;
         }
 
         public void UseDefaultVoice()
@@ -42,7 +42,7 @@ namespace Figroll.PersonalTrainer.Domain.Voice
             if (!_installedVoices.Any())
             {
                 _logger.Error("Could not find any installed TTS voices.  TTS will be disabled.");
-                _voiceSelected = false;
+                VoiceSelected = false;
                 return;
             }
 
@@ -59,12 +59,18 @@ namespace Figroll.PersonalTrainer.Domain.Voice
             }
 
             AutoClearSpeechTrackingOnComplete();
-            _voiceSelected = true;
+            VoiceSelected = true;
+        }
+
+        public virtual event EventHandler<SpokeEventArgs> Spoke;
+        protected void OnSpoke(SpokeEventArgs e)
+        {
+            Spoke?.Invoke(this, e);
         }
 
         private void GetInstalledVoices()
         {
-            _installedVoices = _speaker.GetInstalledVoices();
+            _installedVoices = Speaker.GetInstalledVoices();
         }
 
         private static bool HaveVoiceHint(string voiceHint)
@@ -74,14 +80,14 @@ namespace Figroll.PersonalTrainer.Domain.Voice
 
         private void SelectRandomFavouredVoice(string favourVoiceHint)
         {
-            var enabledVoicesMatchingHint = GetEnabledVoicesMatchingHint(favourVoiceHint).ToArray();
+            var enabledVoicesMatchingHint = Enumerable.ToArray<InstalledVoice>(GetEnabledVoicesMatchingHint(favourVoiceHint));
 
             if (!enabledVoicesMatchingHint.Any())
-                _voiceSelected = false;
+                VoiceSelected = false;
 
             SelectRandom(enabledVoicesMatchingHint);
 
-            _voiceSelected = true;
+            VoiceSelected = true;
         }
 
         private void SmartSelectRandomVoice()
@@ -104,14 +110,13 @@ namespace Figroll.PersonalTrainer.Domain.Voice
         private void SelectRandom(IEnumerable<InstalledVoice> userInstalledVoices)
         {
             var voice = userInstalledVoices.Random().VoiceInfo.Name;
-            _speaker.SelectVoice(voice);
+            Speaker.SelectVoice(voice);
         }
 
         private void SelectRandomAdultWoman()
         {
-            _speaker.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
+            Speaker.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
         }
-
 
         private IEnumerable<InstalledVoice> GetEnabledVoicesMatchingHint(string favourVoiceHint)
         {
@@ -120,7 +125,7 @@ namespace Figroll.PersonalTrainer.Domain.Voice
 
         private void AutoClearSpeechTrackingOnComplete()
         {
-            _speaker.StateChanged += (sender, args) =>
+            Speaker.StateChanged += (sender, args) =>
             {
                 if (args.PreviousState != SynthesizerState.Speaking || args.State != SynthesizerState.Ready) return;
                 OnSpoke(new SpokeEventArgs(string.Empty));
@@ -129,15 +134,15 @@ namespace Figroll.PersonalTrainer.Domain.Voice
 
         private bool NoVoiceSelected()
         {
-            return _voiceSelected == false;
+            return VoiceSelected == false;
         }
 
-        public void Say(string text)
+        protected void Speak(string text)
         {
-            if (_voiceSelected)
+            if (VoiceSelected)
             {
                 OnSpoke(new SpokeEventArgs(text));
-                _speaker.Speak(text);
+                Speaker.Speak(text);
             }
             else
             {
@@ -145,24 +150,12 @@ namespace Figroll.PersonalTrainer.Domain.Voice
             }
         }
 
-        public void Say(string text, int thenPause)
+        protected void SpeakAsync(string text)
         {
-            Say(text);
-            Thread.Sleep(thenPause.ToMilliseconds());
-        }
-
-        public void Say(int pauseThen, string text)
-        {
-            Thread.Sleep(pauseThen.ToMilliseconds());
-            Say(text);
-        }
-
-        public void SayAsync(string text)
-        {
-            if (_voiceSelected)
+            if (VoiceSelected)
             {
                 OnSpoke(new SpokeEventArgs(text));
-                _speaker.SpeakAsync(text);
+                Speaker.SpeakAsync(text);
             }
             else
             {
@@ -180,12 +173,25 @@ namespace Figroll.PersonalTrainer.Domain.Voice
 
             OnSpoke(new SpokeEventArgs(string.Empty));
         }
+    }
 
-        public event EventHandler<SpokeEventArgs> Spoke;
-
-        private void OnSpoke(SpokeEventArgs e)
+    // ReSharper disable once ClassNeverInstantiated.Global
+    public sealed class Trainer : Voice, ITrainer
+    {
+        public void Say(string text)
         {
-            Spoke?.Invoke(this, e);
+            Speak(text);
+        }
+
+        public void Say(string text, int thenPause)
+        {
+            Say(text);
+            Thread.Sleep(thenPause.ToMilliseconds());
+        }
+
+        public void SayAsync(string text)
+        {
+            SpeakAsync(text);
         }
     }
 }

@@ -11,9 +11,8 @@ namespace Figroll.PersonalTrainer.Domain.API
         IEnumerable<Picture> Pictures { get; }
 
         IEnumerable<IGallery> Galleries { get; }
-        IGallery Gallery(string name);
-
         IEnumerable<string> GalleryNames { get; }
+        IGallery Gallery(string name);
 
         Picture GetPicture(string name);
         Picture GetPicture(string gallery, string name);

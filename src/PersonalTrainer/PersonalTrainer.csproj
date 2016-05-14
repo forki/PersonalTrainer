@@ -92,6 +92,12 @@
     <Compile Include="Views\ControllerView.xaml.cs">
       <DependentUpon>ControllerView.xaml</DependentUpon>
     </Compile>
+    <Content Include="taunts\encouragements.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="taunts\taunts.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Page Include="PersonalTrainerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -153,13 +159,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <Paket>True</Paket>
     </Content>
-    <Content Include="content\main\Session.csx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="content\main\Escalator.csx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="content\main\Milovana.csx">
+    <Content Include="content\main\Joip.csx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="content\main\FourTempos.csx">
@@ -205,6 +205,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="content\main\common\standard.csx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="content\main\internal\joip.csx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="NLog.xsd">

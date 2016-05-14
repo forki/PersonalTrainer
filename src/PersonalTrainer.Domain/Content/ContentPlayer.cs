@@ -1,30 +1,19 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reactive;
-using System.Reactive.Linq;
-using System.Reactive.Subjects;
 using System.Threading;
 using Figroll.PersonalTrainer.Domain.API;
 using Figroll.PersonalTrainer.Domain.Utilities;
 
 namespace Figroll.PersonalTrainer.Domain.Content
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class ContentPlayer : IContentViewer
     {
         public static readonly Picture BlankPicture = new Picture(string.Empty, string.Empty);
 
-        private readonly IContentCollection _content;
-        private readonly ManualResetEvent _slideshowStopped = new ManualResetEvent(false);
-        private readonly Subject<Picture> _pictureChanged = new Subject<Picture>();
-
         private IEnumerable<Picture> _pictures = Enumerable.Empty<Picture>();
-        private IObservable<Unit> _currentPlayback;
-
-        public ContentPlayer(IContentCollection content)
-        {
-            _content = content;
-        }
+        private readonly ManualResetEvent _slideshowStopped = new ManualResetEvent(false);
 
         public void Load(IGallery gallery)
         {
@@ -36,47 +25,9 @@ namespace Figroll.PersonalTrainer.Domain.Content
             _pictures = pictures;
         }
 
-        public void PlaySlideshow(int displaySeconds)
-        {
-            PlaySlideshow(_pictures, displaySeconds);
-        }
-
-        public void PlaySlideshow(IGallery gallery, int displaySeconds)
-        {
-            PlaySlideshow(gallery.Pictures, displaySeconds);
-        }
-
-        public void PlaySlideshow(IEnumerable<Picture> pictures, int displaySeconds)
-        {
-            _pictures = pictures;
-
-            _slideshowStopped.Reset();
-
-            _currentPlayback = Observable.Start(() =>
-            {
-                _pictures.ForEach(p =>
-                {
-                    _pictureChanged.OnNext(p);
-                    Thread.Sleep(displaySeconds.ToMilliseconds());
-                });
-
-                _slideshowStopped.Set();
-            });
-        }
-
-        public void Display(string picture)
-        {
-            Display(_content.GetPicture(picture));
-        }
-
-        public void Display(string gallery, string picture)
-        {
-            Display(_content.GetPicture(gallery, picture));
-        }
-
         public void Display(Picture picture)
         {
-            _pictureChanged.OnNext(picture);
+            OnPictureChanged(new PictureEventArgs(picture));
         }
 
         public void Display(Picture picture, int thenPause)
@@ -93,7 +44,7 @@ namespace Figroll.PersonalTrainer.Domain.Content
 
         public void Clear()
         {
-            _pictureChanged.OnNext(BlankPicture);
+            OnPictureChanged(new PictureEventArgs(BlankPicture));
         }
 
         public void Clear(int thenPause)
@@ -102,15 +53,68 @@ namespace Figroll.PersonalTrainer.Domain.Content
             Thread.Sleep(thenPause * 1000);
         }
 
-        public IObservable<Picture> WhenPictureChanged => _pictureChanged.AsObservable();
+        public void PlaySlideshow(int displaySeconds)
+        {
+            PlaySlideshow(_pictures, () => displaySeconds);
+        }
+
+        public void PlaySlideshow(IGallery gallery, int displaySeconds)
+        {
+            PlaySlideshow(gallery.Pictures, () => displaySeconds);
+        }
+
+        public void PlaySlideshow(IEnumerable<Picture> pictures, int displaySeconds)
+        {
+            PlaySlideshow(pictures, () => displaySeconds);
+        }
+
+        public void PlaySlideshow(Func<int> calculateDisplaySeconds)
+        {
+            PlaySlideshow(_pictures, calculateDisplaySeconds());
+        }
+
+        public void PlaySlideshow(IGallery gallery, Func<int> calculateDisplaySeconds)
+        {
+            PlaySlideshow(gallery.Pictures, calculateDisplaySeconds());
+        }
+
+        public void PlaySlideshow(IEnumerable<Picture> pictures, Func<int> calculateDisplaySeconds)
+        {
+            OnSlideshowStarted();
+
+            pictures.ForEach(p =>
+            {
+                OnPictureChanged(new PictureEventArgs(p));
+                Thread.Sleep(calculateDisplaySeconds().ToMilliseconds());
+            });
+
+            OnSlideshowComplete();
+        }
 
         public void WaitUntilComplete()
         {
-            // if IsPlaying to prevent deadlock?
             _slideshowStopped.WaitOne();
-
-            // cannot async/await as scriptcs does not support it
-            //await _currentPlayback;
         }
+
+        public event EventHandler SlideshowStarted;
+        protected virtual void OnSlideshowStarted()
+        {
+            _slideshowStopped.Reset();
+            SlideshowStarted?.Invoke(this, EventArgs.Empty);
+        }
+
+        public event EventHandler<PictureEventArgs> PictureChanged;
+        protected virtual void OnPictureChanged(PictureEventArgs e)
+        {
+            PictureChanged?.Invoke(this, e);
+        }
+
+        public event EventHandler SlideshowComplete;
+        protected virtual void OnSlideshowComplete()
+        {
+            _slideshowStopped.Set();
+            SlideshowComplete?.Invoke(this, EventArgs.Empty);
+        }
+
     }
 }

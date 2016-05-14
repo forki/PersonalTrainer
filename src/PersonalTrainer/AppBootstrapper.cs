@@ -43,6 +43,7 @@ namespace Figroll.PersonalTrainer
                 x.For<IUserSettings>().Singleton().Use(_userSettings);
                 x.For<ITrainer>().Use<Trainer>();
                 x.For<ITimer>().Use<SessionTimer>();
+                x.For<ITaunter>().Use<Taunter>();
                 x.For<IRandomNumberGenerator>().Use<RandomNumberGenerator>();
                 x.For<IMetronome>().Use<Metronome>();
                 x.For<ISequencer>().Use<Sequencer>();
