@@ -1,3 +1,3 @@
-UseTTS: true
+UseTTS: false
 DefaultVoice: Amy
-ContentLocation: D:\Milovana\Content
+ContentLocation: C:\Milovana\Images
