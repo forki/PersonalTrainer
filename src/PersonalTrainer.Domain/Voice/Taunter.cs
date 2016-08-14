@@ -29,7 +29,8 @@ namespace Figroll.PersonalTrainer.Domain.Voice
             {
                 var fullpath = Path.GetFullPath(filename);
                 store.AddRange(File.ReadAllLines(fullpath));
-                _all = _taunts.Union(_encouragements).Union(_neutral);
+                _all = store;
+                //_all = _taunts.Union(_encouragements).Union(_neutral);
             }
             catch (Exception e)
             {

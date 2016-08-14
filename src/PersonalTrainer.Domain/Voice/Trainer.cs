@@ -80,13 +80,15 @@ namespace Figroll.PersonalTrainer.Domain.Voice
 
         private void SelectRandomFavouredVoice(string favourVoiceHint)
         {
-            var enabledVoicesMatchingHint = Enumerable.ToArray<InstalledVoice>(GetEnabledVoicesMatchingHint(favourVoiceHint));
+            var enabledVoicesMatchingHint = GetEnabledVoicesMatchingHint(favourVoiceHint).ToArray();
 
             if (!enabledVoicesMatchingHint.Any())
+            {
                 VoiceSelected = false;
+                return;
+            }
 
             SelectRandom(enabledVoicesMatchingHint);
-
             VoiceSelected = true;
         }
 

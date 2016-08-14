@@ -31,10 +31,7 @@ namespace Figroll.PersonalTrainer.Domain.Utilities
         {
             // Next is upper bound exclusive so make it inclusive
             // which is more intuitive for non-programmers.
-            if (min == 0 || min == 1)
-                return RNG.Next(min, max + min);
-
-            return RNG.Next(min - 1, max);
+            return RNG.Next(min, max + 1);
         }
 
         public int Between(int min, int max, int step)
