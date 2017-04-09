@@ -18,16 +18,4 @@ namespace Figroll.PersonalTrainer.Domain.API
         void Say(string text, int thenPause);
         void SayAsync(string text);
     }
-
-    public interface ITaunter : IVoice
-    {
-        void Load(string filename);
-        void Load(string filename, SpeechClassification classification);
-
-        void TauntAll();
-        void Taunt(SpeechClassification classification = SpeechClassification.Taunt);
-        void TauntSync(SpeechClassification classification = SpeechClassification.Taunt);
-        void AutoTaunt(int seconds, SpeechClassification classification = SpeechClassification.Taunt);
-        void Stop();
-    }
 }

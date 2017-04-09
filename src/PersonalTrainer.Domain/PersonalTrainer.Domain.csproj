@@ -82,7 +82,6 @@
     <Compile Include="Utilities\RandomNumberGenerator.cs" />
     <Compile Include="Utilities\RandomProvider.cs" />
     <Compile Include="Voice\SpokeEventArgs.cs" />
-    <Compile Include="Voice\Taunter.cs" />
     <Compile Include="Voice\Trainer.cs" />
   </ItemGroup>
   <ItemGroup>
