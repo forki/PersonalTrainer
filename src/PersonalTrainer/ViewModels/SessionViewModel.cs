@@ -8,44 +8,22 @@ using Figroll.PersonalTrainer.Domain.API;
 using Figroll.PersonalTrainer.Domain.Content;
 using Figroll.PersonalTrainer.Domain.Scripting;
 using Figroll.PersonalTrainer.Domain.Voice;
+using NLog;
 using Action = System.Action;
 using LogManager = NLog.LogManager;
 
 namespace Figroll.PersonalTrainer.ViewModels
 {
-    [Export(typeof (SessionViewModel))]
+    [Export(typeof(SessionViewModel))]
     public sealed class SessionViewModel : Screen
     {
-        private readonly NLog.Logger _logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType?.ToString());
-
+        private readonly Logger _logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType?.ToString());
         private readonly Dispatcher _dispatcher;
         private readonly ITrainingSession _trainingSession;
         private readonly IHostedScriptExecutor _scriptExecutor;
         private readonly string _scriptFile;
-
         private string _imageLocation = string.Empty;
         private string _subtitle;
-        //private readonly IDisposable _subscription;
-
-        public string ImageLocation
-        {
-            get { return _imageLocation; }
-            private set
-            {
-                _imageLocation = value;
-                NotifyOfPropertyChange(() => ImageLocation);
-            }
-        }
-
-        public string Subtitle
-        {
-            get { return _subtitle; }
-            set
-            {
-                _subtitle = value;
-                NotifyOfPropertyChange(() => Subtitle);
-            }
-        }
 
         public SessionViewModel(Dispatcher dispatcher, ITrainingSession trainingSession, IHostedScriptExecutor scriptExecutor,
             string scriptFile)
@@ -57,6 +35,26 @@ namespace Figroll.PersonalTrainer.ViewModels
 
             _trainingSession.Trainer.Spoke += TrainerOnSpoke;
             _trainingSession.Viewer.PictureChanged += ViewerOnPictureChanged;
+        }
+
+        public string ImageLocation
+        {
+            get => _imageLocation;
+            private set
+            {
+                _imageLocation = value;
+                NotifyOfPropertyChange(() => ImageLocation);
+            }
+        }
+
+        public string Subtitle
+        {
+            get => _subtitle;
+            set
+            {
+                _subtitle = value;
+                NotifyOfPropertyChange(() => Subtitle);
+            }
         }
 
         private void ViewerOnPictureChanged(object sender, PictureEventArgs eventArgs)

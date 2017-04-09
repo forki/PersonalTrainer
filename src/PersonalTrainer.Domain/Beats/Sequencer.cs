@@ -5,8 +5,8 @@ namespace Figroll.PersonalTrainer.Domain.Beats
 {
     public class Sequencer : Metronome, ISequencer
     {
-        private int _beatPosition;
         private readonly Dictionary<int, bool> _pattern = new Dictionary<int, bool>();
+        private int _beatPosition;
 
         public void SetPattern(string pattern)
         {
@@ -62,7 +62,7 @@ namespace Figroll.PersonalTrainer.Domain.Beats
         protected override void DoPlay()
         {
             _beatPosition = 0;
-            var millisecondsPerBeat = (int)(1000.0 / (BPM * 2 / 60.0));
+            var millisecondsPerBeat = (int) (1000.0 / (BPM * 2 / 60.0));
             BeatTimer.Change(millisecondsPerBeat, millisecondsPerBeat);
         }
 
@@ -70,8 +70,8 @@ namespace Figroll.PersonalTrainer.Domain.Beats
         {
             _beatPosition++;
 
-            bool lastBeatInBar = _beatPosition == 8;
-            bool beatShouldPlay = _pattern[_beatPosition];
+            var lastBeatInBar = _beatPosition == 8;
+            var beatShouldPlay = _pattern[_beatPosition];
 
             if (lastBeatInBar && !beatShouldPlay)
             {

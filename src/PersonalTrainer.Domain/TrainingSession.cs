@@ -1,20 +1,11 @@
-using System;
 using Figroll.PersonalTrainer.Domain.API;
 
 namespace Figroll.PersonalTrainer.Domain
 {
-    public class TrainingSession : ITrainingSession, IDisposable
+    public class TrainingSession : ITrainingSession
     {
-        public ITimer Timer { get; }
-        public IUserSettings Settings { get; }
-        public ITrainer Trainer { get; }
-        public IMetronome Metronome { get; }
-        public ISequencer Sequencer { get; }
-        public IContentCollection Content { get; }
-        public IContentViewer Viewer { get; }
-        public IRandomNumberGenerator RNG { get; }
-
-        public TrainingSession(IUserSettings settings, ITimer timer, ITrainer trainer, IMetronome metronome, ISequencer sequencer, IContentCollection content, 
+        public TrainingSession(IUserSettings settings, ITimer timer, ITrainer trainer, IMetronome metronome, ISequencer sequencer,
+            IContentCollection content,
             IContentViewer viewer, IRandomNumberGenerator randomNumberGenerator)
         {
             Settings = settings;
@@ -26,6 +17,15 @@ namespace Figroll.PersonalTrainer.Domain
             Timer = timer;
             RNG = randomNumberGenerator;
         }
+
+        public ITimer Timer { get; }
+        public IUserSettings Settings { get; }
+        public ITrainer Trainer { get; }
+        public IMetronome Metronome { get; }
+        public ISequencer Sequencer { get; }
+        public IContentCollection Content { get; }
+        public IContentViewer Viewer { get; }
+        public IRandomNumberGenerator RNG { get; }
 
         public void Dispose()
         {

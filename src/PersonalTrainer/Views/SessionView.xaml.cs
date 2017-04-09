@@ -3,7 +3,7 @@
 namespace Figroll.PersonalTrainer.Views
 {
     /// <summary>
-    /// Interaction logic for SessionView.xaml
+    ///     Interaction logic for SessionView.xaml
     /// </summary>
     public partial class SessionView : UserControl
     {

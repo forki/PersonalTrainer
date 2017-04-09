@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Threading;
 using NLog;
@@ -6,11 +7,11 @@ using NLog;
 namespace Figroll.PersonalTrainer
 {
     /// <summary>
-    /// Interaction logic for App.xaml
+    ///     Interaction logic for App.xaml
     /// </summary>
-    public partial class App 
+    public partial class App
     {
-        private readonly Logger _logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType?.ToString());
+        private readonly Logger _logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType?.ToString());
 
         public App()
         {
@@ -31,9 +32,6 @@ namespace Figroll.PersonalTrainer
         private void HandleFatalException(Exception e)
         {
             _logger.Fatal(e, e.StackTrace);
-
-            if (e.InnerException != null)
-                HandleFatalException(e.InnerException);
         }
 
         private void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -51,7 +49,9 @@ namespace Figroll.PersonalTrainer
             }
 
             if (!e.IsTerminating)
-                System.Environment.Exit(1);
+            {
+                Environment.Exit(1);
+            }
         }
     }
 }

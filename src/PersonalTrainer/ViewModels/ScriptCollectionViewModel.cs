@@ -6,48 +6,17 @@ using System.Reflection;
 using Caliburn.Micro;
 using Figroll.PersonalTrainer.Domain.Utilities;
 using NLog;
+using LogManager = NLog.LogManager;
 
 namespace Figroll.PersonalTrainer.ViewModels
 {
     public class ScriptCollectionViewModel : PropertyChangedBase
     {
-        private readonly Logger _logger = NLog.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType?.ToString());
+        private readonly Logger _logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType?.ToString());
+        private string _collectionFolderName;
 
         private string _collectionName;
-        private string _collectionFolderName;
         private ScriptViewModel _selectedScript;
-
-        public ObservableCollection<ScriptViewModel> Scripts { get; private set; }
-
-        public string CollectionName
-        {
-            get { return _collectionName; }
-            set
-            {
-                _collectionName = value;
-                NotifyOfPropertyChange(() => CollectionName);
-            }
-        }
-
-        public string CollectionFolderName
-        {
-            get { return _collectionFolderName; }
-            set
-            {
-                _collectionFolderName = value;
-                NotifyOfPropertyChange(() => CollectionFolderName);
-            }
-        }
-
-        public ScriptViewModel SelectedScript
-        {
-            get { return _selectedScript; }
-            set
-            {
-                _selectedScript = value;
-                NotifyOfPropertyChange(() => SelectedScript);
-            }
-        }
 
 
         public ScriptCollectionViewModel(string collectionName, string collectionFolderName)
@@ -59,6 +28,38 @@ namespace Figroll.PersonalTrainer.ViewModels
             SelectedScript = Scripts.FirstOrDefault();
         }
 
+        public ObservableCollection<ScriptViewModel> Scripts { get; private set; }
+
+        public string CollectionName
+        {
+            get => _collectionName;
+            set
+            {
+                _collectionName = value;
+                NotifyOfPropertyChange(() => CollectionName);
+            }
+        }
+
+        public string CollectionFolderName
+        {
+            get => _collectionFolderName;
+            set
+            {
+                _collectionFolderName = value;
+                NotifyOfPropertyChange(() => CollectionFolderName);
+            }
+        }
+
+        public ScriptViewModel SelectedScript
+        {
+            get => _selectedScript;
+            set
+            {
+                _selectedScript = value;
+                NotifyOfPropertyChange(() => SelectedScript);
+            }
+        }
+
         private void LoadScripts()
         {
             Scripts = new ObservableCollection<ScriptViewModel>();
@@ -66,13 +67,12 @@ namespace Figroll.PersonalTrainer.ViewModels
             try
             {
                 var directories = Directory.GetFiles(_collectionFolderName, "*.csx");
-                directories.ForEach(f => Scripts.Add(new ScriptViewModel(Path.GetFileNameWithoutExtension(f), f)));
+                directories.Each(f => Scripts.Add(new ScriptViewModel(Path.GetFileNameWithoutExtension(f), f)));
             }
             catch (Exception e)
             {
                 _logger.Fatal(e, "Exception thrown reading " + _collectionFolderName);
             }
         }
-
     }
 }

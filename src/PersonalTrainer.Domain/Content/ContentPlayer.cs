@@ -11,9 +11,8 @@ namespace Figroll.PersonalTrainer.Domain.Content
     public class ContentPlayer : IContentViewer
     {
         public static readonly Picture BlankPicture = new Picture(string.Empty, string.Empty);
-
-        private IEnumerable<Picture> _pictures = Enumerable.Empty<Picture>();
         private readonly ManualResetEvent _slideshowStopped = new ManualResetEvent(false);
+        private IEnumerable<Picture> _pictures = Enumerable.Empty<Picture>();
 
         public void Load(IGallery gallery)
         {
@@ -82,7 +81,7 @@ namespace Figroll.PersonalTrainer.Domain.Content
         {
             OnSlideshowStarted();
 
-            pictures.ForEach(p =>
+            pictures.Each(p =>
             {
                 OnPictureChanged(new PictureEventArgs(p));
                 Thread.Sleep(calculateDisplaySeconds().ToMilliseconds());
@@ -97,24 +96,24 @@ namespace Figroll.PersonalTrainer.Domain.Content
         }
 
         public event EventHandler SlideshowStarted;
+        public event EventHandler<PictureEventArgs> PictureChanged;
+        public event EventHandler SlideshowComplete;
+
         protected virtual void OnSlideshowStarted()
         {
             _slideshowStopped.Reset();
             SlideshowStarted?.Invoke(this, EventArgs.Empty);
         }
 
-        public event EventHandler<PictureEventArgs> PictureChanged;
         protected virtual void OnPictureChanged(PictureEventArgs e)
         {
             PictureChanged?.Invoke(this, e);
         }
 
-        public event EventHandler SlideshowComplete;
         protected virtual void OnSlideshowComplete()
         {
             _slideshowStopped.Set();
             SlideshowComplete?.Invoke(this, EventArgs.Empty);
         }
-
     }
 }

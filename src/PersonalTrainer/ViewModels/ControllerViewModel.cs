@@ -9,41 +9,21 @@ using Figroll.PersonalTrainer.Domain.API;
 using Figroll.PersonalTrainer.Domain.Scripting;
 using Figroll.PersonalTrainer.Domain.Utilities;
 using NLog;
+using LogManager = NLog.LogManager;
 
 namespace Figroll.PersonalTrainer.ViewModels
 {
     [Export(typeof(ControllerViewModel))]
-    public class ControllerViewModel: Screen
+    public class ControllerViewModel : Screen
     {
-        private readonly Logger _logger = NLog.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType?.ToString());
+        private readonly Logger _logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType?.ToString());
+        private readonly IHostedScriptExecutor _scriptExecutor;
 
         private readonly ITrainingSession _trainingSession;
-        private readonly IHostedScriptExecutor _scriptExecutor;
 
         private string _backgroundImage = string.Empty;
 
         private ScriptCollectionViewModel _selectedCollection;
-        public ObservableCollection<ScriptCollectionViewModel> ScriptCollections { get; private set; }
-
-        public string BackgroundImage
-        {
-            get { return _backgroundImage; }
-            private set
-            {
-                _backgroundImage = value;
-                NotifyOfPropertyChange(() => BackgroundImage);
-            }
-        }
-
-        public ScriptCollectionViewModel SelectedCollection
-        {
-            get { return _selectedCollection; }
-            set
-            {
-                _selectedCollection = value;
-                NotifyOfPropertyChange(() => SelectedCollection);
-            }
-        }
 
         public ControllerViewModel(ITrainingSession trainingSession, IHostedScriptExecutor scriptExecutor)
         {
@@ -56,6 +36,28 @@ namespace Figroll.PersonalTrainer.ViewModels
             SelectedCollection = ScriptCollections.FirstOrDefault();
         }
 
+        public ObservableCollection<ScriptCollectionViewModel> ScriptCollections { get; private set; }
+
+        public string BackgroundImage
+        {
+            get => _backgroundImage;
+            private set
+            {
+                _backgroundImage = value;
+                NotifyOfPropertyChange(() => BackgroundImage);
+            }
+        }
+
+        public ScriptCollectionViewModel SelectedCollection
+        {
+            get => _selectedCollection;
+            set
+            {
+                _selectedCollection = value;
+                NotifyOfPropertyChange(() => SelectedCollection);
+            }
+        }
+
 
         private void LoadScripts()
         {
@@ -66,12 +68,12 @@ namespace Figroll.PersonalTrainer.ViewModels
             try
             {
                 var directories = Directory.GetDirectories(scriptDirectory);
-                directories.ForEach(f => ScriptCollections.Add(new ScriptCollectionViewModel(Path.GetFileNameWithoutExtension(f), f)));
+                directories.Each(f => ScriptCollections.Add(new ScriptCollectionViewModel(Path.GetFileNameWithoutExtension(f), f)));
             }
             catch (Exception e)
             {
                 _logger.Fatal(e, "Exception thrown reading " + scriptDirectory);
             }
         }
-   }
+    }
 }

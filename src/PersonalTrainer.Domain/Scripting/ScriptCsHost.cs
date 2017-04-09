@@ -1,4 +1,3 @@
-using System;
 using ScriptCs;
 using ScriptCs.Contracts;
 using ScriptCs.Engine.Roslyn;
@@ -8,6 +7,13 @@ namespace Figroll.PersonalTrainer.Domain.Scripting
 {
     public class ScriptCsHost
     {
+        public ScriptCsHost()
+        {
+            Root = CreateScriptServices();
+        }
+
+        public ScriptServices Root { get; }
+
         private ScriptServices CreateScriptServices()
         {
             var console = new PersonalTrainerConsole();
@@ -19,13 +25,6 @@ namespace Figroll.PersonalTrainer.Domain.Scripting
 
             builder.FileSystem<ScriptFileSystem>();
             return builder.Build();
-        }
-
-        public ScriptServices Root { get; private set; }
-
-        public ScriptCsHost()
-        {
-            Root = CreateScriptServices();
         }
     }
 }

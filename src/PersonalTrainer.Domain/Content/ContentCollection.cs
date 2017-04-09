@@ -11,9 +11,8 @@ namespace Figroll.PersonalTrainer.Domain.Content
     // ReSharper disable once ClassNeverInstantiated.Global
     public class ContentCollection : IContentCollection
     {
-        private readonly Logger _logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType?.ToString());
-
         private readonly Dictionary<string, Gallery> _content = new Dictionary<string, Gallery>();
+        private readonly Logger _logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType?.ToString());
         private IEnumerable<Picture> _allPictures;
 
         public void Load(string mediaDirectory)
@@ -29,41 +28,6 @@ namespace Figroll.PersonalTrainer.Domain.Content
             LoadMedia(mediaDirectory, extensions);
 
             _allPictures = _content.Values.SelectMany(p => p.Pictures);
-        }
-
-
-        private void LoadMedia(string mediaDirectory, string[] extensions)
-        {
-            try
-            {
-                var files = Directory.GetFiles(mediaDirectory);
-                var galleryName = Path.GetFileNameWithoutExtension(mediaDirectory);
-
-                var pictures = new List<Picture>();
-                foreach (var file in files)
-                {
-                    string ext = Path.GetExtension(file);
-                    if (ext == null || !extensions.Contains(ext.ToLower())) continue;
-
-                    string name = Path.GetFileName(file);
-                    string fullPath = Path.GetFullPath(file);
-                    pictures.Add(new Picture(name, fullPath));
-                }
-
-                if (pictures.Count > 0)
-                {
-                    _content.Add(galleryName, new Gallery(galleryName, pictures));
-                }
-
-                foreach (var subdirectory in Directory.GetDirectories(mediaDirectory))
-                {
-                    LoadMedia(subdirectory, extensions);
-                }
-            }
-            catch (Exception e)
-            {
-                _logger.Fatal(e, $"Exception thrown reading {mediaDirectory}");
-            }
         }
 
         IEnumerable<Picture> IContentCollection.Pictures => _allPictures;
@@ -83,6 +47,44 @@ namespace Figroll.PersonalTrainer.Domain.Content
         public IGallery Gallery(string name)
         {
             return _content[name];
+        }
+
+
+        private void LoadMedia(string mediaDirectory, string[] extensions)
+        {
+            try
+            {
+                var files = Directory.GetFiles(mediaDirectory);
+                var galleryName = Path.GetFileNameWithoutExtension(mediaDirectory);
+
+                var pictures = new List<Picture>();
+                foreach (var file in files)
+                {
+                    var ext = Path.GetExtension(file);
+                    if (ext == null || !extensions.Contains(ext.ToLower()))
+                    {
+                        continue;
+                    }
+
+                    var name = Path.GetFileName(file);
+                    var fullPath = Path.GetFullPath(file);
+                    pictures.Add(new Picture(name, fullPath));
+                }
+
+                if (pictures.Count > 0)
+                {
+                    _content.Add(galleryName, new Gallery(galleryName, pictures));
+                }
+
+                foreach (var subdirectory in Directory.GetDirectories(mediaDirectory))
+                {
+                    LoadMedia(subdirectory, extensions);
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.Fatal(e, $"Exception thrown reading {mediaDirectory}");
+            }
         }
     }
 }

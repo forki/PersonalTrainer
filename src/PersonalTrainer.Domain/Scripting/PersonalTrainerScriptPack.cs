@@ -5,7 +5,7 @@ namespace Figroll.PersonalTrainer.Domain.Scripting
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class PersonalTrainerScriptPack : IScriptPack
-    { 
+    {
         private readonly ITrainingSession _session;
 
         public PersonalTrainerScriptPack(ITrainingSession session)

@@ -57,6 +57,7 @@
     <Compile Include="API\ITrainer.cs" />
     <Compile Include="API\ITrainingSession.cs" />
     <Compile Include="API\IUserSettings.cs" />
+    <Compile Include="API\IVoice.cs" />
     <Compile Include="Content\ContentCollection.cs" />
     <Compile Include="Content\ContentPlayer.cs" />
     <Compile Include="Content\Gallery.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="Utilities\RandomProvider.cs" />
     <Compile Include="Voice\SpokeEventArgs.cs" />
     <Compile Include="Voice\Trainer.cs" />
+    <Compile Include="Voice\Voice.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="paket.references" />

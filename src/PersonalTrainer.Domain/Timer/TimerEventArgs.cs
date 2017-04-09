@@ -2,15 +2,18 @@
 
 namespace Figroll.PersonalTrainer.Domain.Timer
 {
-    public class TimerEventArgs: EventArgs
+    // ReSharper disable once ClassNeverInstantiated.Global
+    public class TimerEventArgs : EventArgs
     {
-        TimeSpan Time { get; }    
-        TimeSpan TimeRemaining { get; }
-
         public TimerEventArgs(TimeSpan time, TimeSpan timeRemaining)
         {
             Time = time;
             TimeRemaining = timeRemaining;
         }
+
+        // ReSharper disable UnusedAutoPropertyAccessor.Local
+        private TimeSpan Time { get; }
+        private TimeSpan TimeRemaining { get; }
+        // ReSharper enable UnusedAutoPropertyAccessor.Local
     }
 }

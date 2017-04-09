@@ -8,10 +8,12 @@ namespace Figroll.PersonalTrainer.Domain.Utilities
     {
         private static readonly Random RNG = RandomProvider.GetThreadRandom();
 
-        public static void ForEach<T>(this IEnumerable<T> source, Action<T> action)
+        public static void Each<T>(this IEnumerable<T> source, Action<T> action)
         {
             foreach (var element in source)
+            {
                 action(element);
+            }
         }
 
         public static T Random<T>(this IEnumerable<T> enumerable)
@@ -61,7 +63,7 @@ namespace Figroll.PersonalTrainer.Domain.Utilities
         public static bool IsPercentageChance(this Random rng, int percentageChance)
         {
             // zero based so 99 + 1 to make percentage chance more obvious.
-            return (rng.Next(99) + 1) <= percentageChance;
+            return rng.Next(99) + 1 <= percentageChance;
         }
 
         public static int ToMilliseconds(this int seconds)

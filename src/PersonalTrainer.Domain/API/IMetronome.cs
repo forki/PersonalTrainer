@@ -7,7 +7,7 @@ namespace Figroll.PersonalTrainer.Domain.API
     {
         int BPM { get; set; }
         int Count { get; set; }
-        int Remaining { get;  }
+        int Remaining { get; }
 
         void Play();
         void Play(int count);

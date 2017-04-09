@@ -1,9 +1,10 @@
-using System;
 using System.Collections.Generic;
 using Figroll.PersonalTrainer.Domain.API;
 using Figroll.PersonalTrainer.Domain.Beats;
 using Figroll.PersonalTrainer.Domain.Content;
+using Figroll.PersonalTrainer.Domain.Timer;
 using Figroll.PersonalTrainer.Domain.Utilities;
+using Figroll.PersonalTrainer.Domain.Voice;
 using ScriptCs;
 using ScriptCs.Contracts;
 
@@ -18,19 +19,19 @@ namespace Figroll.PersonalTrainer.Domain.Scripting
         {
             _script = new ScriptCsHost();
 
-            _script.Root.Executor.Initialize(new List<string>(), new List<IScriptPack>() {new PersonalTrainerScriptPack(session)});
+            _script.Root.Executor.Initialize(new List<string>(), new List<IScriptPack> {new PersonalTrainerScriptPack(session)});
             _script.Root.Executor.AddReferenceAndImportNamespaces(new[]
             {
-                typeof (TrainingSession),
-                typeof (Metronome),
-                typeof (Sequencer),
-                typeof (Voice.Trainer),
-                typeof (Timer.SessionTimer),
-                typeof (Picture),
-                typeof (IContentViewer),
-                typeof (IContentCollection),
-                typeof (PictureInfo),
-                typeof (ExtensionMethods)
+                typeof(TrainingSession),
+                typeof(Metronome),
+                typeof(Sequencer),
+                typeof(Trainer),
+                typeof(SessionTimer),
+                typeof(Picture),
+                typeof(IContentViewer),
+                typeof(IContentCollection),
+                typeof(PictureInfo),
+                typeof(ExtensionMethods)
             });
         }
 

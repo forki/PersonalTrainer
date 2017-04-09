@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Xml;
 using Caliburn.Metro;
 using Caliburn.Micro;
 using Figroll.PersonalTrainer.Domain;

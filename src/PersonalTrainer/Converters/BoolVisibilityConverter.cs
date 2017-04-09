@@ -12,7 +12,7 @@ namespace Figroll.PersonalTrainer.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (bool) value ? IsTrue : IsFalse;
+            return value != null && (bool) value ? IsTrue : IsFalse;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

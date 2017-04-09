@@ -3,14 +3,13 @@ using System.IO;
 using System.Reflection;
 using NLog;
 using YamlDotNet.Serialization;
-using YamlDotNet.Serialization.NamingConventions;
 
 namespace Figroll.PersonalTrainer
 {
     public class SimpleYamlSerialiser<T> where T : class
     {
-        private readonly Logger _logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType?.ToString());
         private readonly Serializer _json = new Serializer();
+        private readonly Logger _logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType?.ToString());
 
         public T Load(string filename)
         {

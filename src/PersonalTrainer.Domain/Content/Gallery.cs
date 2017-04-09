@@ -3,15 +3,15 @@ using Figroll.PersonalTrainer.Domain.API;
 
 namespace Figroll.PersonalTrainer.Domain.Content
 {
-    public partial class Gallery : IGallery
+    public class Gallery : IGallery
     {
-        public string Name { get; private set; }
-        public IEnumerable<Picture> Pictures { get; private set; }
-
         public Gallery(string name, IEnumerable<Picture> pictures)
         {
             Name = name;
             Pictures = pictures;
         }
+
+        public string Name { get; }
+        public IEnumerable<Picture> Pictures { get; }
     }
 }

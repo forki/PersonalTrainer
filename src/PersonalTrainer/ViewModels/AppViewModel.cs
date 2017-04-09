@@ -1,57 +1,47 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
-using System.IO;
 using System.Reflection;
 using System.Windows;
 using Caliburn.Micro;
-using Figroll.PersonalTrainer.Domain;
 using Figroll.PersonalTrainer.Domain.API;
 using Figroll.PersonalTrainer.Domain.Scripting;
-using Figroll.PersonalTrainer.Domain.Utilities;
 using NLog;
 using LogManager = NLog.LogManager;
-using Screen = Caliburn.Micro.Screen;
 
 namespace Figroll.PersonalTrainer.ViewModels
 {
-    [Export(typeof (AppViewModel))]
+    [Export(typeof(AppViewModel))]
     public class AppViewModel : Conductor<Screen>.Collection.OneActive, IHaveDisplayName, IViewAware
     {
-        private readonly ITrainingSession _trainingSession;
-        private readonly IHostedScriptExecutor _scriptExecutor;
-
         public enum AutoTrainerModes
         {
             Controller,
-            ActiveSession,
+            ActiveSession
         }
 
         private readonly Logger _logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType?.ToString());
-
+        private readonly IHostedScriptExecutor _scriptExecutor;
+        private readonly ITrainingSession _trainingSession;
+        private readonly ControllerViewModel _controller;
+        private AutoTrainerModes _autoTrainerMode;
         private string _displayName = Constants.PersonalTrainerTitle;
         private string _errorText;
-
-        private AutoTrainerModes _autoTrainerMode;
-        private readonly ControllerViewModel _controller;
         private SessionViewModel _session;
 
-        public override string DisplayName
+        public AppViewModel(ITrainingSession trainingSession, IHostedScriptExecutor scriptExecutor)
         {
-            get { return _displayName; }
-            set
-            {
-                _displayName = value;
-                NotifyOfPropertyChange(() => DisplayName);
-            }
+            _trainingSession = trainingSession;
+            _scriptExecutor = scriptExecutor;
+
+            _controller = new ControllerViewModel(trainingSession, scriptExecutor);
+            SetControlPanelState();
         }
 
         public bool IsSessionActive => AutoTrainerMode == AutoTrainerModes.ActiveSession;
 
         public string ErrorText
         {
-            get { return _errorText; }
+            get => _errorText;
             set
             {
                 _errorText = value;
@@ -61,7 +51,7 @@ namespace Figroll.PersonalTrainer.ViewModels
 
         public AutoTrainerModes AutoTrainerMode
         {
-            get { return _autoTrainerMode; }
+            get => _autoTrainerMode;
             set
             {
                 _autoTrainerMode = value;
@@ -70,16 +60,14 @@ namespace Figroll.PersonalTrainer.ViewModels
             }
         }
 
-        public AppViewModel(ITrainingSession trainingSession, IHostedScriptExecutor scriptExecutor)
+        public override string DisplayName
         {
-            _trainingSession = trainingSession;
-            _scriptExecutor = scriptExecutor;
-
-            _controller = new ControllerViewModel(trainingSession, scriptExecutor);
-            SetControlPanelState();
-
-            var x = new Playground(trainingSession);
-            x.Example_1();
+            get => _displayName;
+            set
+            {
+                _displayName = value;
+                NotifyOfPropertyChange(() => DisplayName);
+            }
         }
 
         protected override void OnViewReady(object view)
@@ -119,7 +107,8 @@ namespace Figroll.PersonalTrainer.ViewModels
         {
             SetSessionState();
 
-            _session = new SessionViewModel(Application.Current.Dispatcher, _trainingSession, _scriptExecutor, _controller.SelectedCollection.SelectedScript.ScriptFileName);
+            _session = new SessionViewModel(Application.Current.Dispatcher, _trainingSession, _scriptExecutor,
+                _controller.SelectedCollection.SelectedScript.ScriptFileName);
             _session.ScriptCompleted += OnScriptCompleted;
 
             ActivateItem(_session);
@@ -130,13 +119,9 @@ namespace Figroll.PersonalTrainer.ViewModels
             EndSession();
 
             if (args.Result.CompileExceptionInfo != null)
-            {
                 ErrorText = args.Result.CompileExceptionInfo.SourceException.Message;
-            }
             else if (args.Result.ExecuteExceptionInfo != null)
-            {
                 ErrorText = args.Result.ExecuteExceptionInfo.SourceException.Message;
-            }
         }
 
         private void EndSession()
@@ -144,9 +129,7 @@ namespace Figroll.PersonalTrainer.ViewModels
             _session.ScriptCompleted -= OnScriptCompleted;
 
             if (_session.IsActive)
-            {
                 DeactivateItem(_session, true);
-            }
 
             SetControlPanelState();
             ActivateItem(_controller);

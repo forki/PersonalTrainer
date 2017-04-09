@@ -5,7 +5,7 @@ using MahApps.Metro.Controls;
 
 namespace Figroll.PersonalTrainer
 {
-    [Export(typeof (IWindowManager))]
+    [Export(typeof(IWindowManager))]
     public class AppWindowManager : MetroWindowManager
     {
         public override MetroWindow CreateCustomWindow(object view, bool windowIsView)
